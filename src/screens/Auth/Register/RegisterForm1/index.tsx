@@ -41,10 +41,6 @@ export const RegisterForm1 = ({navigation, route}: PropsScreen) => {
     errosLength,
     aceito,
     setAceito,
-    keysPix,
-    mask,
-    handlePickerChange,
-    changeKeyboardType,
     setPhotoChanged,
   } = useIndex({navigation, route});
 
@@ -90,14 +86,6 @@ export const RegisterForm1 = ({navigation, route}: PropsScreen) => {
           keyboardType="default"
           title={texts.inputname}
           keyName="nome"
-          value={[user, setUser]}
-          icon="user"
-          max={50}
-        />
-        <CustomInput
-          keyboardType="default"
-          title={texts.inputapelido}
-          keyName="apelido"
           value={[user, setUser]}
           icon="user"
           max={50}

@@ -256,6 +256,10 @@ export const CustomInput = ({
                   inputRange: [0, 1],
                   outputRange: [dynamicSize(16), dynamicSize(12)],
                 }),
+                color: placeholderAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [Colors.black, Colors.blue],
+                }),
               },
             ]}>
             {title}

@@ -1,7 +1,6 @@
 // useIndex.ts
 
 import {Alert} from '@/src/components/Alert';
-import {chave} from '@/src/config';
 import {setItemAsync} from '@/src/libs/AsyncStorage';
 import {getToken} from '@/src/libs/Firebase/messaging';
 import {api} from '@/src/services/api';
@@ -38,17 +37,12 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
 
   const defaultUser: UserCreateDTO = {
     nome: '',
-    apelido: '',
     celular: '',
     email: '',
-    chavepixtipo: 0,
-    chavepix: '',
-    cpf: '',
     confirmarEmail: '',
     senha: '',
     confirmarSenha: '',
     foto: {uri: '', fileName: '', type: ''},
-    chave: chave,
   };
 
   const [user, setUser] = useState<UserCreateDTO>(defaultUser);
@@ -87,27 +81,8 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
       errors.nome = texts.errors.requiredfield;
       isValid = false;
     }
-    if (!user.apelido) {
-      errors.apelido = texts.errors.requiredfield;
-      isValid = false;
-    }
     if (!user.celular) {
       errors.celular = texts.errors.requiredfield;
-      isValid = false;
-    }
-    if (!user.chavepixtipo) {
-      errors.chavepixtipo = texts.errors.requiredfield;
-      isValid = false;
-    }
-    if (!user.chavepix) {
-      errors.chavepix = texts.errors.requiredfield;
-      isValid = false;
-    }
-    if (!user.cpf) {
-      errors.cpf = texts.errors.requiredfield;
-      isValid = false;
-    } else if (!validarCPF(user.cpf)) {
-      errors.cpf = 'CPF inválido';
       isValid = false;
     }
     if (!user.email) {
@@ -147,86 +122,27 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     return isValid;
   };
 
-  useEffect(() => {
-    const keysPixGet = async () => {
-      const keys = await getKeysPix();
-      if (keys) {
-        setKeysPix(keys);
-      }
-    };
-    keysPixGet();
-  }, []);
-
-  const handlePickerChange = (selectedId: number) => {
-    console.log('selectedId', selectedId);
-    setUser(prev => ({...prev, chavepixtipo: selectedId}));
-    switch (selectedId) {
-      case 1:
-        setMask('Aleatória');
-        break;
-      case 2:
-        setMask('Celular');
-        break;
-      case 3:
-        setMask('E-mail');
-        break;
-      case 4:
-        setMask('CPF');
-        break;
-      case 5:
-        setMask('CNPJ');
-        break;
-      default:
-        setMask(undefined);
-    }
-  };
-
-  const changeKeyboardType = (maskType: any) => {
-    switch (maskType) {
-      case 'Celular':
-        return 'phone-pad';
-      case 'E-mail':
-        return 'email-address';
-      case 'CPF':
-        return 'numeric';
-      case 'CNPJ':
-        return 'numeric';
-      default:
-        return 'default';
-    }
-  };
-
-  // if (__DEV__) {
-  //   user.nome = 'Alejandro Gomes';
-  //   user.apelido = 'Ale';
-  //   user.celular = '(31) 9 9159 9292';
-  //   user.cpf = '388.989.470-46';
-  //   user.email = 's8qsbnhyve@smykwb.com';
-  //   user.confirmarEmail = 's8qsbnhyve@smykwb.com';
-  //   user.senha = 'Teste@01';
-  //   user.confirmarSenha = 'Teste@01';
-  // }
+  if (__DEV__) {
+    user.nome = 'Alejandro Gomes';
+    user.celular = '(31) 9 9159 9292';
+    user.email = 'teste@hodtmail.com';
+    user.confirmarEmail = 'teste@hodtmail.com';
+    user.senha = 'Teste@01';
+    user.confirmarSenha = 'Teste@01';
+  }
 
   const createAccount = async () => {
     setLoading(true);
     if (await validation()) {
-      let token = await getToken();
       const body = {
         ...user,
-        token: token,
       };
       console.log('body', JSON.stringify(body, null, 2));
       const formData = new FormData();
       formData.append('nome', body?.nome);
-      formData.append('apelido', body?.apelido.trim());
       formData.append('celular', body?.celular);
-      formData.append('chavepixtipo', body?.chavepixtipo);
-      formData.append('chavepix', body?.chavepix);
-      formData.append('cpf', body?.cpf);
       formData.append('email', body?.email);
-      formData.append('senha', body?.senha);
-      formData.append('token', token);
-      formData.append('chave', chave);
+      formData.append('password', body?.senha);
       if (photoChanged && body?.foto) {
         formData.append('foto', {
           name: body?.foto?.fileName,
@@ -236,7 +152,7 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
       }
 
       const response = await api.form<UserCreateDTO>(
-        'autenticacao/usuario-novo',
+        '/usuarios/CriarUsuario',
         formData,
       );
       if (response.success) {
@@ -260,7 +176,6 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
         });
         console.log('response', JSON.stringify(response, null, 2));
       }
-      console.log('token', token);
     }
     setLoading(false);
   };
@@ -282,8 +197,6 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     setAceito,
     keysPix,
     mask,
-    handlePickerChange,
-    changeKeyboardType,
     setPhotoChanged,
   };
 };

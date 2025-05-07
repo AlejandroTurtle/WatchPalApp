@@ -98,19 +98,11 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
 
     if (response.success) {
       const data = response?.data as UserProfile;
-      if (data?.emailConfirmado) {
-        saveProfile(data);
-        navigation.reset({
-          index: 0,
-          routes: [{name: 'Tabs'}],
-        });
-        console.log('response: ', JSON.stringify(data, null, 2));
-      } else {
-        setAlert({
-          message: 'E-mail não confirmado',
-          title: 'Alerta',
-        });
-      }
+      saveProfile(data);
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Tabs'}],
+      });
     } else {
       setAlert({
         message: response?.error,

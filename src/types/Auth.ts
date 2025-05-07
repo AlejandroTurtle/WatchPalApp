@@ -1,31 +1,22 @@
-import {ImagePickerResult} from 'components/CustomProfileImagePicker';
+import {ImagePickerResult} from '../components/CustomProfileImagePicker';
 
 export type UserCreateDTO = {
   nome: string;
-  apelido: string;
   celular: string;
   id?: number;
-  cpf: string;
   email: string;
   confirmarEmail: string;
-  chavepixtipo: number;
-  chavepix: string;
   senha: string;
   confirmarSenha: string;
-  chave: string;
   foto: ImagePickerResult;
   error?: {
     nome?: string;
-    apelido?: string;
     celular?: string;
-    cpf?: string;
     email?: string;
     confirmarEmail?: string;
     senha?: string;
     confirmarSenha?: string;
     aceito?: string;
-    chavepixtipo: number;
-    chavepix: string;
     foto: ImagePickerResult;
   };
 };

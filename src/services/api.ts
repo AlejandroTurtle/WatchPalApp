@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {chave} from '../config';
 import {Alert} from 'react-native';
 import {getVersion} from 'react-native-device-info';
 
@@ -92,7 +91,7 @@ async function post<T>(url: string, body: any, log?: boolean): Promise<API<T>> {
 
     const _console: any = JSON.stringify({url, body, data, token}, null, 2);
     if (!data?.success && !url.includes('token')) {
-      console.log(_console);
+      console.log('_console:', _console);
       console.log({token});
     } else if (log) {
       console.log({token});
@@ -124,7 +123,6 @@ async function form<T>(
       method: 'POST',
       body: body,
       headers: {
-        'Content-Type': 'multipart/form-data',
         Accept: '*/*',
         Authorization: `Bearer ${token}`,
       },
@@ -141,7 +139,7 @@ async function form<T>(
     if (!data?.success) {
       console.log(JSON.stringify({url, body, data, token}, null, 2));
     } else if (log) {
-      console.log({token});
+      console.log({log});
       Console(url, {body, response: data});
     }
 

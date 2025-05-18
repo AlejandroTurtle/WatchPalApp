@@ -1,10 +1,9 @@
 import React from 'react';
 
 import homeIcon from '@/assets/home.png';
-import ticket from '@/assets/ticket.png';
-import settings from '@/assets/settings.png';
-import search from '@/assets/search.png';
-import location from '@/assets/location.png';
+import userIcon from '@/assets/user.png';
+import heartIcon from '@/assets/heart.png';
+import searchIcon from '@/assets/search.png';
 import {CustomTabs, tabsType} from '@/src/libs/Navigation/TabsBar';
 import {Home} from './Home/Main';
 import {Settings} from './Settings/Main';
@@ -18,33 +17,23 @@ export function Tabs() {
   const tabs: tabsType[] = [
     {
       name: 'Inicio',
-      label: 'ínicio',
       icon: homeIcon,
       component: HomeStack,
     },
 
     {
-      name: 'Procurar',
-      label: 'Procurar',
-      icon: search,
-      component: SearchStack,
-    },
-    {
       name: 'Explorar',
-      label: 'Explorar',
-      icon: location,
+      icon: heartIcon,
       component: MapStack,
     },
     {
       name: 'Ingressos',
-      label: 'Ingressos',
-      icon: ticket,
+      icon: searchIcon,
       component: TicketsStack,
     },
     {
       name: 'Ajustes',
-      label: 'Ajustes',
-      icon: settings,
+      icon: userIcon,
       component: SettingsStack,
     },
   ];

@@ -14,15 +14,11 @@ const fetchApiUrl = async () => {
       },
     });
 
-    console.log('Status da resposta:', response.status);
-    console.log('OK:', response.ok);
-
     if (!response.ok) {
       throw new Error(`Erro ${response.status}: ${response.statusText}`);
     }
 
     const json = await response.json();
-    console.log('Resposta JSON:', json.url);
 
     if (json?.error) {
       Alert.alert('Erro de versão', json?.error, [

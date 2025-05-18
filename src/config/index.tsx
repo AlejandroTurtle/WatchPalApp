@@ -21,7 +21,7 @@ export const Colors: props = {
   black: '#000000',
   white: '#FFFFFF',
   background: '#242C3B',
-  gray: '#F2F4F5FF',
+  gray: '#7E848D',
   gray200: '#666666',
   red: '#FF0000FF',
   green: '#1FBB0AFF',
@@ -42,3 +42,7 @@ export const dynamicSize = (number: number) => {
 
 export let byPass = true;
 byPass = __DEV__ ? byPass : false;
+
+export const baseUrl = 'https://api.themoviedb.org/3/';
+export const theMovieKey =
+  'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzNWE3MTU0ZDViOTY5OGMyZmQyYmNjODVjYjBiY2Y5NiIsIm5iZiI6MTc0NDE0OTM1My40NzQsInN1YiI6IjY3ZjU5YjY5MjQwZTY1OTk2ODk5NDM5YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.oQNvyXJr11EOpvQAJHOGUzD70FXy6SoxsliEcGPI8eU';

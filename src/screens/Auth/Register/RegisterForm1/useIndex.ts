@@ -50,28 +50,7 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
   const [isLoading, setLoading] = useState(false);
   const [alert, setAlert] = useState<Alert>(null);
   const [aceito, setAceito] = useState(false);
-  const [keysPix, setKeysPix] = useState<KeysPix[]>([]);
-  const [mask, setMask] = useState<any>(undefined);
   const [photoChanged, setPhotoChanged] = useState(false);
-
-  // if (__DEV__) {
-  //     useEffect(() => {
-  //         setUser({
-  //             ...user,
-  //             nome: 'Alejandro',
-  //             apelido: 'Ale',
-  //             celular: '(31) 991599292',
-  //             email: 'alejandrogomes23@hotmail.com',
-  //             chavepixtipo: 2,
-  //             chavepix: '(31) 991599292',
-  //             cpf: '147.694.396-60',
-  //             confirmarEmail: 'alejandrogomes23@hotmail.com',
-  //             senha: 'Teste@01',
-  //             confirmarSenha: 'Teste@01',
-  //             chave: chave,
-  //         });
-  //     }, []);
-  // }
 
   const validation = () => {
     let isValid = true;
@@ -122,14 +101,28 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     return isValid;
   };
 
-  if (__DEV__) {
-    user.nome = 'Alejandro Gomes';
-    user.celular = '(31) 9 9159 9292';
-    user.email = 'teste@hodtmail.com';
-    user.confirmarEmail = 'teste@hodtmail.com';
-    user.senha = 'Teste@01';
-    user.confirmarSenha = 'Teste@01';
-  }
+  useEffect(() => {
+    const userData = {
+      nome: 'Alejandro Gomes',
+      email: 'alejandrogomes23@hotmail.com',
+      senha: 'k8v674223',
+      celular: '31991599292',
+      confirmarEmail: 'alejandrogomes23@hotmail.com',
+      confirmarSenha: 'k8v674223',
+    };
+
+    if (__DEV__) {
+      setUser({
+        ...user,
+        nome: userData.nome,
+        email: userData.email,
+        senha: userData.senha,
+        celular: userData.celular,
+        confirmarEmail: userData.confirmarEmail,
+        confirmarSenha: userData.confirmarSenha,
+      });
+    }
+  }, []);
 
   const createAccount = async () => {
     setLoading(true);
@@ -162,22 +155,17 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
           title: 'Sucesso',
           message: 'Usuário criado com sucesso',
           onPress: () => {
-            navigation.navigate('ConfirmEmail', {
-              id: response?.data?.id,
-              email: body?.email,
-              senha: body?.senha,
+            navigation.reset({
+              index: 0,
+              routes: [
+                {name: 'Login', params: {email: user.email, senha: user.senha}},
+              ],
             });
           },
         });
-      } else {
-        setAlert({
-          title: 'Aviso',
-          message: response?.error,
-        });
-        console.log('response', JSON.stringify(response, null, 2));
+        setLoading(false);
       }
     }
-    setLoading(false);
   };
 
   const errosLength = user?.error
@@ -195,8 +183,6 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     errosLength,
     aceito,
     setAceito,
-    keysPix,
-    mask,
     setPhotoChanged,
   };
 };

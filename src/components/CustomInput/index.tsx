@@ -174,10 +174,10 @@ export const CustomInput = ({
         ? 'red'
         : isFocused
         ? Colors.blue
-        : Colors.gray,
+        : Colors.white,
 
       borderRadius: dynamicSize(20),
-      backgroundColor: Colors.gray,
+      backgroundColor: Colors.white,
     },
     containerPassword: {paddingHorizontal: dynamicSize(10)},
     icon: {
@@ -258,7 +258,7 @@ export const CustomInput = ({
                 }),
                 color: placeholderAnim.interpolate({
                   inputRange: [0, 1],
-                  outputRange: [Colors.black, Colors.blue],
+                  outputRange: [Colors.gray, Colors.blue],
                 }),
               },
             ]}>

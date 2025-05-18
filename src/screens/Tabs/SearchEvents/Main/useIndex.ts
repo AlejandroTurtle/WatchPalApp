@@ -1,4 +1,4 @@
-import {Event} from '@/types/Event';
+import {Event} from '@/src/types/Filmes';
 export const useIndex = () => {
   const mocks: Event[] = [
     {

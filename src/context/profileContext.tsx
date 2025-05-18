@@ -7,7 +7,6 @@ import {
 } from '../libs/AsyncStorage';
 import {User, UserProfile} from '../types/Auth';
 import {api} from '../services/api';
-import {chave} from '../config';
 
 type PropsContext = {
   user: User | null;
@@ -32,20 +31,15 @@ export const AppProfileContext = ({
   const tokenVerify = async () => {
     try {
       const token = await getItemAsync('token');
-      if (token) {
-        const validar: {validado: boolean} = (await api.post<any>(
-          'autenticacao/validar-token',
-          {
-            token,
-            chave: chave,
-          },
-        )) as any;
-        if (!validar.validado) {
-          await removeProfile();
-          return false;
-        }
+      const response = await api.post<any>('/usuarios/ValidarToken', {
+        token,
+      });
+      if (response.success) {
+        return true;
+      } else {
+        await removeProfile();
+        return false;
       }
-      return true;
     } catch (error) {
       return true;
     }
@@ -53,7 +47,7 @@ export const AppProfileContext = ({
 
   async function loadProfile() {
     try {
-      const response = await api.get<UserProfile>('usuarios/dados');
+      const response = await api.get<UserProfile>('/usuarios/UsuariosDados');
       if (response.success && response.data) {
         const _data = response.data as any;
         setProfile(_data);

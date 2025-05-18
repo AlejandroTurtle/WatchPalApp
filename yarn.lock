@@ -8846,7 +8846,7 @@ __metadata:
     react-native-screens: ^4.3.0
     react-native-svg: ^15.11.2
     react-native-svg-transformer: ^1.5.0
-    react-native-vector-icons: ^10.2.0
+    react-native-vector-icons: latest
     react-native-webview: ^13.13.5
     react-test-renderer: 18.3.1
     typescript: 5.0.4
@@ -9639,7 +9639,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-vector-icons@npm:^10.2.0":
+"react-native-vector-icons@npm:latest":
   version: 10.2.0
   resolution: "react-native-vector-icons@npm:10.2.0"
   dependencies:

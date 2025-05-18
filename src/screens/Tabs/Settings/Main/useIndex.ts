@@ -9,10 +9,9 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
   const logout = () => {
     deleteToken();
     removeProfile();
-    navigation.reset({
-      index: 0,
-      routes: [{name: 'AuthStack'}],
-    });
+    setTimeout(() => {
+      navigation.reset({index: 0, routes: [{name: 'AuthStack'}]});
+    }, 0);
   };
   return {logout};
 };

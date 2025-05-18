@@ -16,7 +16,7 @@ export const CustomMenu = ({name, onPress}: Props) => {
       justifyContent: 'space-between',
     },
     line: {
-      borderBottomColor: Colors.purple,
+      borderBottomColor: Colors.blue,
       borderBottomWidth: dynamicSize(1),
       width: '100%',
       opacity: 0.5,
@@ -24,7 +24,7 @@ export const CustomMenu = ({name, onPress}: Props) => {
     text: {
       fontFamily: 'Poppins-Regular',
       fontSize: dynamicSize(16),
-      color: Colors.purple,
+      color: Colors.blue,
     },
   });
 
@@ -32,7 +32,7 @@ export const CustomMenu = ({name, onPress}: Props) => {
     <>
       <TouchableOpacity style={styles.container} onPress={onPress}>
         <Text style={styles.text}>{name}</Text>
-        <Feather name="chevron-right" size={20} color={Colors.purple} />
+        <Feather name="chevron-right" size={20} color={Colors.blue} />
       </TouchableOpacity>
       <View style={styles.line} />
     </>

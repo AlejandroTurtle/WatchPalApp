@@ -1,5 +1,5 @@
 import {Alert} from '@/src/components/Alert';
-import {chave} from '@/src/config';
+
 import {profileContext} from '@/src/context/profileContext';
 import {getToken} from '@/src/libs/Firebase/messaging';
 import {api} from '@/src/services/api';
@@ -10,10 +10,10 @@ import {useEffect, useState} from 'react';
 import {BackHandler} from 'react-native';
 
 export const useIndex = ({navigation, route}: PropsScreen) => {
+  const params = route.params as UserLoginDTO;
   const defaultUser: UserLoginDTO = {
     email: '',
     senha: '',
-    chave: chave,
   };
 
   const [user, setUser] = useState<UserLoginDTO>(defaultUser);
@@ -58,18 +58,14 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
   };
 
   useEffect(() => {
-    const userData = [
-      {email: 'alejandrogomes23@hotmail.com', senha: 'k8v674223'},
-    ];
-
-    if (__DEV__) {
-      const id = 0;
+    if (params) {
       setUser({
-        email: userData[id].email,
-        senha: userData[id].senha,
+        ...user,
+        email: params.email,
+        senha: params.senha,
       });
     }
-  }, []);
+  }, [params]);
 
   const validation = async () => {
     console.log('validation: ', JSON.stringify(user, null, 2));
@@ -99,6 +95,7 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     if (response.success) {
       const data = response?.data as UserProfile;
       saveProfile(data);
+      console.log('data: ', JSON.stringify(data, null, 2));
       navigation.reset({
         index: 0,
         routes: [{name: 'Tabs'}],

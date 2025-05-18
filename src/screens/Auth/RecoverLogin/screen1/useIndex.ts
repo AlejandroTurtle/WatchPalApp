@@ -1,7 +1,6 @@
 // useIndex.ts
 
 import {Alert} from '@/src/components/Alert';
-import {chave} from '@/src/config';
 import {api} from '@/src/services/api';
 import {PropsScreen} from '@/src/types/Navigation';
 import {validarEmail} from '@/src/utils/validarEmail';
@@ -9,7 +8,6 @@ import {useEffect, useState} from 'react';
 
 type UserDTO = {
   email: string;
-  chave: string;
   error?: {
     email?: string;
   };
@@ -17,7 +15,6 @@ type UserDTO = {
 
 const defaultUser: UserDTO = {
   email: '',
-  chave: chave,
 };
 
 export const useIndex = ({navigation, route}: PropsScreen) => {
@@ -63,10 +60,9 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     setLoading(true);
     const body = {
       email: user.email.toLowerCase().trim(),
-      chave: user.chave,
     };
     let response = await api.post<{codigo: string}>(
-      'autenticacao/recuperar-senha',
+      '/usuarios/EmailRecuperarSenha',
       body,
     );
     setLoading(false);
@@ -85,21 +81,7 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     }
   };
 
-  // useEffect(() => {
-  //   if (__DEV__) {
-  //     setUser({
-  //       email: 's8qsbnhyve@smykwb.com',
-  //       chave: chave,
-  //     });
-  //   }
-  // }, [navigation]);
-
   const nextScreen = async () => {
-    // if (byPass) {
-    //   navigation.navigate('RecoverLogin2', {email: user.email});
-    //   return;
-    // }
-
     let isPassed = await validation();
     isPassed && (await request());
   };

@@ -30,7 +30,6 @@ export type ImagePickerResponse = {
 export type UserLoginDTO = {
   email: string;
   senha: string;
-  chave: string;
   error?: {
     email?: string;
     senha?: string;
@@ -39,15 +38,9 @@ export type UserLoginDTO = {
 
 export type UserProfile = {
   id: string;
-  emailConfirmado?: boolean;
   token: string;
   nome: string;
-  apelido: string;
   id_usuario: number;
-  cpf: string;
-  chavepix: string;
-  chavepixtipo: string;
-  chavepixtipoId: number;
   email: string;
   foto: ImagePickerResult;
   celular: string;
@@ -55,7 +48,6 @@ export type UserProfile = {
 
 export type User = {
   id: string;
-  emailConfirmado?: boolean;
   token: string;
   nome: string;
   apelido: string;

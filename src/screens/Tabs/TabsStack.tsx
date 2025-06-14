@@ -7,11 +7,12 @@ import searchIcon from '@/assets/search.png';
 import {CustomTabs, tabsType} from '@/src/libs/Navigation/TabsBar';
 import {Home} from './Home/Main';
 import {Settings} from './Settings/Main';
-import {MapStack} from './Map/MapStack';
+
 import {SettingsStack} from './Settings/SettingsStack';
 import {HomeStack} from './Home/HomeStack';
-import {SearchStack} from './SearchEvents/SearchStack';
-import {TicketsStack} from './Tickets/TicketsStack';
+
+import {FavoritesStack} from './Favorites/FavoritesStack';
+import {SearchStack} from './Search/SearchStack';
 
 export function Tabs() {
   const tabs: tabsType[] = [
@@ -22,14 +23,14 @@ export function Tabs() {
     },
 
     {
-      name: 'Explorar',
+      name: 'Favoritos',
       icon: heartIcon,
-      component: MapStack,
+      component: FavoritesStack,
     },
     {
-      name: 'Ingressos',
+      name: 'Buscar',
       icon: searchIcon,
-      component: TicketsStack,
+      component: SearchStack,
     },
     {
       name: 'Ajustes',

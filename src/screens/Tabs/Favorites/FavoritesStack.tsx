@@ -1,12 +1,11 @@
 // In App.js in a new project
 
 import * as React from 'react';
-
 import {CustomScreens} from '@/src/components/CustomScreens';
-import {SearchEvents} from './Main';
+import {Favorites} from './Main';
 
-const screens = [{name: 'SearchEvents', component: SearchEvents}];
+const screens = [{name: 'Favorites', component: Favorites}];
 
-export function SearchStack() {
+export function FavoritesStack() {
   return <CustomScreens screens={screens} />;
 }

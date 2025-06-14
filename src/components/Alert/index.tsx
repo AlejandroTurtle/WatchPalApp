@@ -1,8 +1,9 @@
 import React, {Dispatch, SetStateAction} from 'react';
 import {Modal, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {Colors, dynamicSize} from '../../config';
+import {Colors} from '../../config';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Feather from 'react-native-vector-icons/Feather';
 
 export type Alert = {
   message: string;
@@ -46,9 +47,9 @@ export const CustomAlert = ({alert, setAlert}: Props) => {
     },
     card: {
       width: '90%',
-      backgroundColor: Colors.white,
-      borderRadius: dynamicSize(20),
-      padding: dynamicSize(20),
+      backgroundColor: Colors.background,
+      borderRadius: 20,
+      padding: 20,
     },
     headerRow: {
       width: '100%',
@@ -57,64 +58,64 @@ export const CustomAlert = ({alert, setAlert}: Props) => {
       justifyContent: 'space-between',
     },
     closeButton: {
-      width: dynamicSize(36),
-      height: dynamicSize(36),
-      borderRadius: dynamicSize(18),
-      backgroundColor: Colors.gray,
+      width: 36,
+      height: 36,
+      borderRadius: 18,
+      backgroundColor: Colors.blue,
       justifyContent: 'center',
       alignItems: 'center',
     },
     transparent: {
-      width: dynamicSize(36),
-      height: dynamicSize(36),
-      borderRadius: dynamicSize(18),
+      width: 36,
+      height: 36,
+      borderRadius: 18,
       backgroundColor: 'transparent',
       justifyContent: 'center',
       alignItems: 'center',
     },
     title: {
-      fontSize: dynamicSize(20),
+      fontSize: 20,
       fontWeight: '600',
       textAlign: 'center',
-      color: isSuccess ? Colors.green : isAviso ? Colors.red : Colors.purple,
+      color: isSuccess ? Colors.green : isAviso ? Colors.red : Colors.blue,
     },
     iconContainer: {
       alignItems: 'center',
-      marginVertical: dynamicSize(10),
+      marginVertical: 10,
     },
     message: {
-      fontSize: dynamicSize(16),
+      fontSize: 16,
       textAlign: 'center',
-      marginTop: dynamicSize(10),
-      color: Colors.gray200,
+      marginTop: 10,
+      color: Colors.white,
     },
     buttonRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       width: '100%',
-      paddingHorizontal: dynamicSize(20),
-      marginTop: dynamicSize(20),
-      marginBottom: dynamicSize(10),
+      paddingHorizontal: 20,
+      marginTop: 20,
+      marginBottom: 10,
     },
     button: {
       flex: 1,
-      borderRadius: dynamicSize(25),
-      paddingVertical: dynamicSize(12),
-      marginHorizontal: dynamicSize(5),
+      borderRadius: 25,
+      paddingVertical: 12,
+      marginHorizontal: 5,
       justifyContent: 'center',
       alignItems: 'center',
     },
     cancelButton: {
-      backgroundColor: Colors.purple,
+      backgroundColor: Colors.white,
     },
     confirmButton: {
       backgroundColor: 'transparent',
       borderWidth: 1,
-      borderColor: Colors.purple,
+      borderColor: Colors.blue,
     },
-    buttonText: {fontSize: dynamicSize(13)},
+    buttonText: {fontSize: 13},
     cancelText: {color: Colors.white},
-    confirmText: {color: Colors.purple},
+    confirmText: {color: Colors.blue},
   });
 
   return (
@@ -123,11 +124,7 @@ export const CustomAlert = ({alert, setAlert}: Props) => {
         <View style={styles.card}>
           <View style={styles.headerRow}>
             <TouchableOpacity style={styles.closeButton} onPress={handleCancel}>
-              <EvilIcons
-                name="close"
-                size={dynamicSize(28)}
-                color={Colors.black}
-              />
+              <Feather name="x" size={28} color={Colors.white} />
             </TouchableOpacity>
 
             {(isSuccess || isAviso) && (
@@ -142,7 +139,7 @@ export const CustomAlert = ({alert, setAlert}: Props) => {
               <View style={styles.iconContainer}>
                 <FontAwesome
                   name="exclamation-triangle"
-                  size={dynamicSize(40)}
+                  size={40}
                   color={Colors.red}
                 />
               </View>

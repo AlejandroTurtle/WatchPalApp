@@ -12,36 +12,34 @@ export const Home = ({navigation, route}: PropsScreen) => {
     <CustomScreenContainer>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: 120}} // Adicione aqui
+        contentContainerStyle={{paddingBottom: 120}}
         style={{flexGrow: 1}}>
         <CustomHeaderHome onPress={() => {}} />
 
         <CustomLastPlay
           title="Últimos assistidos"
-          onPress={() => {
-            console.log('click');
-          }}
+          onClick={() => console.log('ultimos assistidos')}
         />
         <CustomLastPlay
           title="Filmes em cartaz no cinema"
-          onPress={() => {
-            console.log('click');
+          onPress={filme => {
+            navigation.navigate('Details', {filme});
           }}
           cover={filmsonAir}
           line
         />
         <CustomLastPlay
           title="Filmes com melhores avaliações"
-          onPress={() => {
-            console.log('click');
+          onPress={filme => {
+            navigation.navigate('Details', {filme});
           }}
           cover={mostRated}
           line
         />
         <CustomLastPlay
           title="Filmes mais populares"
-          onPress={() => {
-            console.log('click');
+          onPress={filme => {
+            navigation.navigate('Details', {filme});
           }}
           cover={mostPopular}
           line

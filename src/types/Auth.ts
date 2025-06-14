@@ -44,6 +44,15 @@ export type UserProfile = {
   email: string;
   foto: ImagePickerResult;
   celular: string;
+  favorites: Favorites[];
+};
+
+export type Favorites = {
+  id: string;
+  tituloId: number;
+  titulo: string;
+  numberSeasons?: number;
+  numberEpisodes?: number;
 };
 
 export type User = {

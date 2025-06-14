@@ -15,27 +15,25 @@ type Props = {
   title: string;
   line?: boolean;
   cover?: Filme[];
-  onPress: () => void;
+  onPress?: (filme: Filme) => void;
+  onClick?: () => void;
 };
 
-type EmptyProps = {
-  onPress: () => void;
-};
-
-const EmptyListComponent: React.FC<EmptyProps> = ({onPress}) => (
-  <TouchableOpacity style={styles.emptyContainer} onPress={onPress}>
+const EmptyListComponent: React.FC<{onClick?: () => void}> = ({onClick}) => (
+  <TouchableOpacity style={styles.emptyContainer} onPress={onClick}>
     <Text style={styles.emptyText}>
       Clique aqui para adicionar um filme ou série
     </Text>
   </TouchableOpacity>
 );
 
-export const CustomLastPlay = ({
+export const CustomLastPlay: React.FC<Props> = ({
   title,
-  onPress,
   cover = [],
   line = false,
-}: Props) => {
+  onPress,
+  onClick,
+}) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.row}>
@@ -47,7 +45,7 @@ export const CustomLastPlay = ({
               name="chevron-right"
               size={30}
               color={Colors.white}
-              onPress={onPress}
+              onPress={onClick}
             />
           </>
         )}
@@ -59,13 +57,17 @@ export const CustomLastPlay = ({
         showsHorizontalScrollIndicator={false}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({item}) => (
-          <Image
-            source={{uri: `https://image.tmdb.org/t/p/w500${item.poster_path}`}}
-            style={styles.image}
-          />
+          <TouchableOpacity onPress={() => onPress?.(item)}>
+            <Image
+              source={{
+                uri: `https://image.tmdb.org/t/p/w500${item.poster_path}`,
+              }}
+              style={styles.image}
+            />
+          </TouchableOpacity>
         )}
         contentContainerStyle={styles.listContent}
-        ListEmptyComponent={() => <EmptyListComponent onPress={onPress} />}
+        ListEmptyComponent={() => <EmptyListComponent onClick={onClick} />}
         removeClippedSubviews={false}
       />
     </View>

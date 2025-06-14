@@ -153,7 +153,7 @@ export const Start = ({navigation}: PropsScreen) => {
   return (
     <View style={styles.containerTitle}>
       <Logo />
-      <ActivityIndicator color={Colors.purple} size={dynamicSize(60)} />
+      <ActivityIndicator color={Colors.blue} size={dynamicSize(60)} />
     </View>
   );
 };

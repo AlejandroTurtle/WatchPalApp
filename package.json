@@ -1,5 +1,5 @@
 {
-  "name": "noxel",
+  "name": "watchpal",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -7,6 +7,7 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start --reset-cache ",
+    "release": "adb uninstall com.watchpal & npx react-native run-android --mode=release && xdg-open ${PWD}/android/app/build/outputs/apk/release",
     "test": "jest"
   },
   "dependencies": {
@@ -25,7 +26,6 @@
     "react-native-device-info": "^14.0.2",
     "react-native-get-location": "^5.0.0",
     "react-native-image-picker": "^8.2.0",
-    "react-native-maps": "^1.22.6",
     "react-native-modern-datepicker": "^1.0.0-beta.91",
     "react-native-permissions": "^5.4.0",
     "react-native-safe-area-context": "^5.0.0",

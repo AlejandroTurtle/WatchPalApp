@@ -22,12 +22,9 @@ const defaultUser: UserDTO = {
 
 export const useIndex = ({navigation, route}: PropsScreen) => {
   const params = route.params;
-  console.log('params: ', JSON.stringify(params, null, 2));
   const [user, setUser] = useState<UserDTO>(defaultUser);
   const [isLoading, setLoading] = useState(false);
   const [alert, setAlert] = useState<Alert>(null);
-
-  console.log('parametros: ', params);
 
   const texts = {
     inputcode: 'Código',
@@ -80,7 +77,6 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     };
     const request = await api.post('/usuarios/RecuperarSenha', body);
     if (request.success) {
-      console.log('request', JSON.stringify(request, null, 2));
       setAlert({
         title: 'Sucesso',
         message: 'Senha alterada com sucesso',
@@ -100,9 +96,7 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
   };
 
   const nextScreen = async () => {
-    console.log('entrou aqui: ');
     let isPassed = await validation();
-    console.log('isPassed: ', isPassed);
     isPassed && (await requestNewPassword());
   };
 

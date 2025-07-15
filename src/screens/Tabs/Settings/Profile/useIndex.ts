@@ -64,7 +64,6 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
   }, []);
 
   const handlePickerChange = (selectedId: number) => {
-    console.log('selectedId', selectedId);
     setUser(prev =>
       prev ? {...prev, chavepixtipo: String(selectedId)} : null,
     );
@@ -164,7 +163,6 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     }
     const response = await api.form('usuarios/alterar', formData);
     if (response.success) {
-      console.log('response: ', response);
       setAlert({
         title: 'Sucesso',
         message: 'Perfil alterado com sucesso',

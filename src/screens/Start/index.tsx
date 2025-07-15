@@ -30,11 +30,8 @@ export const Start = ({navigation}: PropsScreen) => {
 
   const req = async () => {
     const validar = await tokenVerify();
-    console.log('token verificado: ', validar);
     const profile = await rememberUser();
-    console.log('profile: ', profile);
     if (validar && profile) {
-      // console.log('profile -------: ', JSON.stringify(profile, null, 2));
       navigation.reset({
         index: 0,
         routes: [{name: 'Tabs'}],

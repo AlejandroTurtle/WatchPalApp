@@ -26,8 +26,6 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
   const [userId, setUserId] = useState<string>();
   const {saveProfile} = profileContext();
 
-  console.log('params', params);
-
   useEffect(() => {
     const getUserId = async () => {
       if (!params?.id) {
@@ -67,8 +65,6 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
         body,
       );
       if (response.success) {
-        console.log('response', JSON.stringify(response, null, 2));
-
         setAlert({
           title: 'Sucesso',
           message: 'E-mail confirmado com sucesso!',
@@ -100,9 +96,7 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
       'autenticacao/autenticar-reenviar-email',
       body,
     );
-    console.log('body', JSON.stringify(body, null, 2));
     if (response.success) {
-      console.log('response', JSON.stringify(response, null, 2));
       setAlert({
         title: 'Sucesso',
         message: 'E-mail reenviado com sucesso!',

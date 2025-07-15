@@ -46,7 +46,6 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
 
   const validation = async () => {
     if (!user.email) {
-      console.log('email: ');
       setError('email', texts.errors.emptyfield);
       return false;
     } else if (!validarEmail(user.email)) {

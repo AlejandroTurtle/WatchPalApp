@@ -22,19 +22,14 @@ interface MovieResult {
   vote_count: number;
 }
 
-interface MovieResponse {
-  page: number;
-  results: MovieResult[];
-  total_pages: number;
-  total_results: number;
-}
-
 export const useIndex = ({navigation, route}: PropsScreen) => {
   const {filme} = route.params;
-  const [data, setData] = useState<MovieResponse>();
+  const params = route.params;
+  const [data, setData] = useState<MovieResult>();
   const {profile} = profileContext();
   const [alert, setAlert] = useState<Alert>(null);
   const [favorite, setFavorite] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const favoritos = profile?.favorites ?? [];
@@ -43,12 +38,12 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
 
     setFavorite(isFavorito);
   }, [profile?.favorites, filme.id]);
-  const getDetails = async () => {
-    try {
-      const encodedId = encodeURIComponent(filme.original_title);
 
+  const getDetails = async () => {
+    setLoading(true);
+    try {
       const response = await fetch(
-        `${baseUrl}/search/movie?query=${encodedId}&language=pt-BR&region=BR`,
+        `${baseUrl}/movie/${filme.id}?language=pt-BR&region=BR`,
         {
           method: 'GET',
           headers: {
@@ -57,14 +52,12 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
           },
         },
       );
-      const _data: MovieResponse = await response.json();
+      const _data: MovieResult = await response.json();
       setData(_data);
-
-      if (_data.results.length > 0) {
-        console.log('Backdrop Path:', _data.results[0].backdrop_path);
-      }
     } catch (error) {
       console.error('Erro ao buscar filmes populares:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -76,7 +69,7 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     const body = {
       userId: profile?.id,
       tituloId: filme.id,
-      titulo: filme.title,
+      titulo: filme.original_title,
     };
     const response = await api.post('/media/adicionar-favorito', body);
     if (response.success) {
@@ -103,5 +96,13 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     }
   };
 
-  return {data, addFavorite, alert, setAlert, favorite, removeFavorite};
+  return {
+    data,
+    addFavorite,
+    alert,
+    setAlert,
+    favorite,
+    removeFavorite,
+    loading,
+  };
 };

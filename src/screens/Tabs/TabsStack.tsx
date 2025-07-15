@@ -5,8 +5,6 @@ import userIcon from '@/assets/user.png';
 import heartIcon from '@/assets/heart.png';
 import searchIcon from '@/assets/search.png';
 import {CustomTabs, tabsType} from '@/src/libs/Navigation/TabsBar';
-import {Home} from './Home/Main';
-import {Settings} from './Settings/Main';
 
 import {SettingsStack} from './Settings/SettingsStack';
 import {HomeStack} from './Home/HomeStack';

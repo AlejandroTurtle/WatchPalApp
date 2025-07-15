@@ -3521,13 +3521,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/geojson@npm:^7946.0.13":
-  version: 7946.0.16
-  resolution: "@types/geojson@npm:7946.0.16"
-  checksum: d66e5e023f43b3e7121448117af1930af7d06410a32a585a8bc9c6bb5d97e0d656cd93d99e31fa432976c32e98d4b780f82bf1fd1acd20ccf952eb6b8e39edf2
-  languageName: node
-  linkType: hard
-
 "@types/graceful-fs@npm:^4.1.3":
   version: 4.1.9
   resolution: "@types/graceful-fs@npm:4.1.9"
@@ -8800,59 +8793,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"noxel@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "noxel@workspace:."
-  dependencies:
-    "@babel/core": ^7.25.2
-    "@babel/preset-env": ^7.25.3
-    "@babel/runtime": ^7.25.0
-    "@react-native-async-storage/async-storage": ^2.1.0
-    "@react-native-community/cli": 15.0.1
-    "@react-native-community/cli-platform-android": 15.0.1
-    "@react-native-community/cli-platform-ios": 15.0.1
-    "@react-native-community/datetimepicker": ^8.3.0
-    "@react-native-firebase/app": ^22.0.0
-    "@react-native-firebase/messaging": ^22.0.0
-    "@react-native/babel-preset": 0.76.5
-    "@react-native/eslint-config": 0.76.5
-    "@react-native/metro-config": 0.76.5
-    "@react-native/typescript-config": 0.76.5
-    "@react-navigation/bottom-tabs": ^7.2.0
-    "@react-navigation/elements": ^2.2.5
-    "@react-navigation/native": ^7.0.14
-    "@react-navigation/native-stack": ^7.2.0
-    "@types/react": ^18.2.6
-    "@types/react-native-modern-datepicker": ^1.0.5
-    "@types/react-native-vector-icons": ^6.4.18
-    "@types/react-test-renderer": ^18.0.0
-    axios: ^1.7.9
-    babel-jest: ^29.6.3
-    babel-plugin-module-resolver: ^5.0.2
-    eslint: ^8.19.0
-    jest: ^29.6.3
-    metro-react-native-babel-preset: ^0.77.0
-    prettier: 2.8.8
-    react: 18.3.1
-    react-native: 0.76.5
-    react-native-autoheight-webview: ^1.6.5
-    react-native-device-info: ^14.0.2
-    react-native-get-location: ^5.0.0
-    react-native-image-picker: ^8.2.0
-    react-native-maps: ^1.22.6
-    react-native-modern-datepicker: ^1.0.0-beta.91
-    react-native-permissions: ^5.4.0
-    react-native-safe-area-context: ^5.0.0
-    react-native-screens: ^4.3.0
-    react-native-svg: ^15.11.2
-    react-native-svg-transformer: ^1.5.0
-    react-native-vector-icons: latest
-    react-native-webview: ^13.13.5
-    react-test-renderer: 18.3.1
-    typescript: 5.0.4
-  languageName: unknown
-  linkType: soft
-
 "npm-run-path@npm:^4.0.1":
   version: 4.0.1
   resolution: "npm-run-path@npm:4.0.1"
@@ -9542,22 +9482,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: d261d4f0571b771c5d2d8a1d5c129743a4993318a454e5bf7850db0fa452d4d5da2215a2f2af3879cd38211b864b3ba77d1d09255ff1f43112b3dcf985d6c233
-  languageName: node
-  linkType: hard
-
-"react-native-maps@npm:^1.22.6":
-  version: 1.23.2
-  resolution: "react-native-maps@npm:1.23.2"
-  dependencies:
-    "@types/geojson": ^7946.0.13
-  peerDependencies:
-    react: ">= 18.3.1"
-    react-native: ">= 0.76.0"
-    react-native-web: ">= 0.11"
-  peerDependenciesMeta:
-    react-native-web:
-      optional: true
-  checksum: 1d5ce11f7508947a8f27ba7f4d29814ecbe4184c5c3db324379cfbc8481e9b782993746047985e01949f266b816301907654e72e50eb02c5c782d0afc44718e7
   languageName: node
   linkType: hard
 
@@ -11177,6 +11101,58 @@ __metadata:
   checksum: e6a5a1f5a8dba7744399743d3cfb571db4c3947897875d4962a7c5b1bf2195ab4518c838cb4cea652e71729f21bba2e98dc75686f5fccde0fabbd894e2ed0c0d
   languageName: node
   linkType: hard
+
+"watchpal@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "watchpal@workspace:."
+  dependencies:
+    "@babel/core": ^7.25.2
+    "@babel/preset-env": ^7.25.3
+    "@babel/runtime": ^7.25.0
+    "@react-native-async-storage/async-storage": ^2.1.0
+    "@react-native-community/cli": 15.0.1
+    "@react-native-community/cli-platform-android": 15.0.1
+    "@react-native-community/cli-platform-ios": 15.0.1
+    "@react-native-community/datetimepicker": ^8.3.0
+    "@react-native-firebase/app": ^22.0.0
+    "@react-native-firebase/messaging": ^22.0.0
+    "@react-native/babel-preset": 0.76.5
+    "@react-native/eslint-config": 0.76.5
+    "@react-native/metro-config": 0.76.5
+    "@react-native/typescript-config": 0.76.5
+    "@react-navigation/bottom-tabs": ^7.2.0
+    "@react-navigation/elements": ^2.2.5
+    "@react-navigation/native": ^7.0.14
+    "@react-navigation/native-stack": ^7.2.0
+    "@types/react": ^18.2.6
+    "@types/react-native-modern-datepicker": ^1.0.5
+    "@types/react-native-vector-icons": ^6.4.18
+    "@types/react-test-renderer": ^18.0.0
+    axios: ^1.7.9
+    babel-jest: ^29.6.3
+    babel-plugin-module-resolver: ^5.0.2
+    eslint: ^8.19.0
+    jest: ^29.6.3
+    metro-react-native-babel-preset: ^0.77.0
+    prettier: 2.8.8
+    react: 18.3.1
+    react-native: 0.76.5
+    react-native-autoheight-webview: ^1.6.5
+    react-native-device-info: ^14.0.2
+    react-native-get-location: ^5.0.0
+    react-native-image-picker: ^8.2.0
+    react-native-modern-datepicker: ^1.0.0-beta.91
+    react-native-permissions: ^5.4.0
+    react-native-safe-area-context: ^5.0.0
+    react-native-screens: ^4.3.0
+    react-native-svg: ^15.11.2
+    react-native-svg-transformer: ^1.5.0
+    react-native-vector-icons: latest
+    react-native-webview: ^13.13.5
+    react-test-renderer: 18.3.1
+    typescript: 5.0.4
+  languageName: unknown
+  linkType: soft
 
 "wcwidth@npm:^1.0.1":
   version: 1.0.1

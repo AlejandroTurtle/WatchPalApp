@@ -1,6 +1,7 @@
 import {PropsScreen} from '@/src/types/Navigation';
 import React from 'react';
 import {
+  ActivityIndicator,
   Image,
   ScrollView,
   StyleSheet,
@@ -17,11 +18,26 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {CustomAlert} from '@/src/components/Alert';
 
 export const Details = ({navigation, route}: PropsScreen) => {
-  const {data, addFavorite, alert, setAlert, favorite, removeFavorite} =
-    useIndex({
-      navigation,
-      route,
-    });
+  const {
+    data,
+    addFavorite,
+    alert,
+    setAlert,
+    favorite,
+    removeFavorite,
+    loading,
+  } = useIndex({
+    navigation,
+    route,
+  });
+
+  if (loading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color={Colors.blue} />
+      </View>
+    );
+  }
 
   return (
     <CustomScreenContainer>
@@ -29,31 +45,31 @@ export const Details = ({navigation, route}: PropsScreen) => {
       <ScrollView
         contentContainerStyle={{paddingBottom: 120}}
         showsVerticalScrollIndicator={false}>
-        {data && data.results.length > 0 && (
+        {data && (
           <>
-            <Text style={styles.title}>{data.results[0].title}</Text>
+            <Text style={styles.title}>{data.original_title}</Text>
             <Image
               source={{
-                uri: `https://image.tmdb.org/t/p/w500${data.results[0].poster_path}`,
+                uri: `https://image.tmdb.org/t/p/w500${data.poster_path}`,
               }}
               style={styles.poster}
             />
             <Text style={styles.secondTitle}>Sinopse</Text>
-            <Text style={styles.sinopse}>{data.results[0].overview}</Text>
+            <Text style={styles.sinopse}>{data.overview}</Text>
             <View style={styles.bottomRow}>
               <View style={styles.iconGroup}>
                 <Feather name="star" size={30} color="#FFD700" />
-                <Text style={styles.rating}>
-                  {data.results[0].vote_average}
-                </Text>
+                <Text style={styles.rating}>{data.vote_average}</Text>
               </View>
               <View style={styles.iconGroup}>
-                <FontAwesome
-                  name={favorite ? 'heart' : 'heart-o'}
-                  size={30}
-                  color={Colors.red}
-                  onPress={favorite ? removeFavorite : addFavorite}
-                />
+                <TouchableOpacity
+                  onPress={favorite ? removeFavorite : addFavorite}>
+                  <FontAwesome
+                    name={favorite ? 'heart' : 'heart-o'}
+                    size={30}
+                    color={Colors.red}
+                  />
+                </TouchableOpacity>
                 <Text style={styles.rating}>Favoritar</Text>
               </View>
             </View>

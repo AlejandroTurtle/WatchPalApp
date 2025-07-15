@@ -35,6 +35,16 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     return () => backHandler.remove();
   }, []);
 
+  useEffect(() => {
+    if (__DEV__) {
+      setUser({
+        ...user,
+        email: 'alejandrogomes23@hotmail.com',
+        senha: 'k8v674223',
+      });
+    }
+  }, []);
+
   const texts = {
     linksignup: 'Criar conta',
     linkforgot: 'Esqueceu sua senha?',
@@ -68,7 +78,6 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
   }, [params]);
 
   const validation = async () => {
-    console.log('validation: ', JSON.stringify(user, null, 2));
     if (!user.email) {
       setError('email', texts.errors.emptyfield);
       return false;
@@ -95,7 +104,6 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     if (response.success) {
       const data = response?.data as UserProfile;
       saveProfile(data);
-      console.log('data: ', JSON.stringify(data, null, 2));
       navigation.reset({
         index: 0,
         routes: [{name: 'Tabs'}],

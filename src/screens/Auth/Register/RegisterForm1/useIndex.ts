@@ -2,17 +2,11 @@
 
 import {Alert} from '@/src/components/Alert';
 import {setItemAsync} from '@/src/libs/AsyncStorage';
-import {getToken} from '@/src/libs/Firebase/messaging';
 import {api} from '@/src/services/api';
 import {UserCreateDTO} from '@/src/types/Auth';
 import {PropsScreen} from '@/src/types/Navigation';
-import {KeysPix} from '@/src/types/TypeKeysPix';
-import {getKeysPix} from '@/src/utils/GetTypesKeyPix';
-import {validarCPF} from '@/src/utils/validarCPF';
 import {validarEmail} from '@/src/utils/validarEmail';
 import {useEffect, useState} from 'react';
-import {Platform} from 'react-native';
-import _default from 'react-native-permissions';
 
 export const useIndex = ({navigation, route}: PropsScreen) => {
   const params = route.params as UserCreateDTO;
@@ -130,7 +124,6 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
       const body = {
         ...user,
       };
-      console.log('body', JSON.stringify(body, null, 2));
       const formData = new FormData();
       formData.append('nome', body?.nome);
       formData.append('celular', body?.celular);
@@ -149,7 +142,6 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
         formData,
       );
       if (response.success) {
-        console.log('response', JSON.stringify(response, null, 2));
         await setItemAsync('userId', response?.data?.id);
         setAlert({
           title: 'Sucesso',

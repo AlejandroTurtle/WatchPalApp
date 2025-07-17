@@ -1,5 +1,14 @@
-import React from 'react';
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+/* eslint-disable react/no-unstable-nested-components */
+import React, {useState} from 'react';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+  StyleSheet,
+  ScrollView,
+  Text,
+} from 'react-native';
 import {useIndex} from './useIndex';
 import {PropsScreen} from '@/src/types/Navigation';
 import {Colors, dynamicSize, sizeScreen} from '@/src/config';
@@ -11,18 +20,33 @@ import {CustomTextWithNavigation} from '@/src/components/CustomTextWithNavigatio
 import {CustomButton} from '@/src/components/CustomButton';
 import TextNavigation from '@/src/components/TextNavigation';
 import {CustomAlert} from '@/src/components/Alert';
+import {validarEmail} from '@/src/utils/Validators';
+import {useTheme} from '@react-navigation/native';
+import {TextInput} from 'react-native-paper';
+import Feather from 'react-native-vector-icons/Feather';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export const Login = ({navigation, route}: PropsScreen) => {
-  const {user, setUser, isLoading, alert, setAlert, nextScreen, texts} =
-    useIndex({
-      navigation,
-      route,
-    });
+  const {
+    control,
+    handleSubmit,
+    isLoading,
+    alert,
+    setAlert,
+    texts,
+    requestLogin,
+  } = useIndex({
+    navigation,
+    route,
+  });
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+
+  const {colors} = useTheme();
 
   const styles = StyleSheet.create({
     title: {
       fontSize: dynamicSize(38),
-      color: Colors.white,
+      color: colors.text,
       textAlign: 'left',
       fontFamily: 'Poppins-SemiBold',
       marginBottom: dynamicSize(20),
@@ -39,59 +63,63 @@ export const Login = ({navigation, route}: PropsScreen) => {
       resizeMode: 'contain',
     },
   });
+
   return (
     <CustomScreenContainer>
       <CustomHeader />
-      <ScrollView
-        style={{width: '100%'}}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          flexGrow: 1,
-          marginTop: dynamicSize(20),
-        }}>
-        <Text children={'Realize\nseu login!'} style={styles.title} />
-        <View>
-          <CustomInput
-            keyboardType="email-address"
-            title={texts.inputemail}
-            keyName="email"
-            value={[user, setUser]}
-            icon="mail"
-          />
-          <CustomInput
-            title={texts.inputpassword}
-            keyName="senha"
-            value={[user, setUser]}
-            secureTextEntry
-            icon="lock"
-          />
-        </View>
-        <CustomTextWithNavigation
-          text={texts.linkforgot}
-          customStyle={{
-            alignItems: 'flex-end',
-            color: Colors.blue,
-            marginbottom: dynamicSize(50),
-          }}
-          onPress={() => {
-            navigation.navigate('RecoverLogin1');
-          }}
-        />
+      <Text children={'Realize\nseu login!'} style={styles.title} />
 
-        <CustomButton
-          title={texts.button}
-          isLoading={isLoading}
-          onPress={nextScreen}
-          alignItems="flex-end"
-          mv={20}
-        />
-        <TextNavigation
-          text1="Criar uma nova conta?"
-          text2="Crie"
-          onPress={() => navigation.navigate('RegisterForm1')}
-        />
-      </ScrollView>
+      <CustomInput
+        label="E‑mail"
+        name="email"
+        keyboardType="email-address"
+        placeholder="Digite seu e‑mail"
+        control={control}
+      />
+      <CustomInput
+        label="Senha"
+        name="password"
+        placeholder="Digite sua senha"
+        control={control}
+        secureTextEntry={secureTextEntry}
+        right={
+          <TextInput.Icon
+            icon={() => (
+              <Feather
+                name={secureTextEntry ? 'eye-off' : 'eye'}
+                size={20}
+                color={colors.text}
+              />
+            )}
+            onPress={() => setSecureTextEntry(!secureTextEntry)}
+            forceTextInputFocus={false}
+          />
+        }
+      />
+      <CustomTextWithNavigation
+        text={texts.linkforgot}
+        customStyle={{
+          alignItems: 'flex-end',
+          color: colors.text,
+          marginbottom: dynamicSize(50),
+        }}
+        onPress={() => {
+          navigation.navigate('RecoverLogin1');
+        }}
+      />
 
+      <CustomButton
+        title={texts.button}
+        isLoading={isLoading}
+        onPress={handleSubmit(requestLogin)}
+        alignItems="flex-end"
+        mv={20}
+      />
+      <TextNavigation
+        text1="Criar uma nova conta?"
+        text2="Crie"
+        onPress={() => navigation.navigate('RegisterForm1')}
+      />
       <CustomAlert alert={alert} setAlert={setAlert} />
     </CustomScreenContainer>
   );

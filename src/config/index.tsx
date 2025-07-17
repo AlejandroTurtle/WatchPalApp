@@ -30,6 +30,30 @@ export const Colors: props = {
   blue: '#3C9EEA',
 };
 
+export const LightColors = {
+  purple: '#7B28FF',
+  black: '#000000',
+  white: '#FFFFFF',
+  background: '#F2F4F5',
+  gray: '#7E848D',
+  gray200: '#A1A1A1',
+  red: '#FF0000FF',
+  green: '#1FBB0AFF',
+  blue: '#3C9EEA',
+};
+
+export const DarkColors = {
+  purple: '#7B28FF',
+  black: '#FFFFFF',
+  white: '#000000',
+  background: '#242C3B',
+  gray: '#666666',
+  gray200: '#7E848D',
+  red: '#FF0000FF',
+  green: '#1FBB0AFF',
+  blue: '#3C9EEA',
+};
+
 export const sizeScreen = {
   width,
   height,

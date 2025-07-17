@@ -6,7 +6,6 @@ import {User, UserProfile} from '@/src/types/Auth';
 import {PropsScreen} from '@/src/types/Navigation';
 import {KeysPix} from '@/src/types/TypeKeysPix';
 import {getKeysPix} from '@/src/utils/GetTypesKeyPix';
-import {validarEmail} from '@/src/utils/validarEmail';
 import {useEffect, useState} from 'react';
 
 export type PixType =

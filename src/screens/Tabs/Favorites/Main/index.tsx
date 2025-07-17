@@ -79,7 +79,7 @@ export const Favorites = ({navigation, route}: PropsScreen) => {
   };
 
   return (
-    <CustomScreenContainer>
+    <>
       <CustomHeader text="Favoritos" noBack />
 
       <FlatList
@@ -96,7 +96,7 @@ export const Favorites = ({navigation, route}: PropsScreen) => {
         }
         showsVerticalScrollIndicator={false}
       />
-    </CustomScreenContainer>
+    </>
   );
 };
 

@@ -1,11 +1,9 @@
-// useIndex.ts
-
 import {Alert} from '@/src/components/Alert';
 import {setItemAsync} from '@/src/libs/AsyncStorage';
 import {api} from '@/src/services/api';
 import {UserCreateDTO} from '@/src/types/Auth';
 import {PropsScreen} from '@/src/types/Navigation';
-import {validarEmail} from '@/src/utils/validarEmail';
+import {validarEmail} from '@/src/utils/Validators';
 import {useEffect, useState} from 'react';
 
 export const useIndex = ({navigation, route}: PropsScreen) => {
@@ -119,11 +117,12 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
   }, []);
 
   const createAccount = async () => {
-    setLoading(true);
     if (await validation()) {
+      setLoading(true);
       const body = {
         ...user,
       };
+
       const formData = new FormData();
       formData.append('nome', body?.nome);
       formData.append('celular', body?.celular);

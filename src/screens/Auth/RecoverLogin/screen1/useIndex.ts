@@ -3,7 +3,6 @@
 import {Alert} from '@/src/components/Alert';
 import {api} from '@/src/services/api';
 import {PropsScreen} from '@/src/types/Navigation';
-import {validarEmail} from '@/src/utils/validarEmail';
 import {useEffect, useState} from 'react';
 
 type UserDTO = {

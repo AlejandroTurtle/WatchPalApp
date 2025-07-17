@@ -5,9 +5,11 @@ import {PropsScreen} from '@/src/types/Navigation';
 import {CustomLastPlay} from '@/src/components/CustomLastPlay';
 import {useIndex} from './useIndex';
 import {ScrollView} from 'react-native';
+import {TextInput} from 'react-native-paper';
 
 export const Home = ({navigation, route}: PropsScreen) => {
   const {filmsonAir, mostRated, mostPopular} = useIndex({navigation, route});
+  const [text, setText] = React.useState('');
   return (
     <CustomScreenContainer>
       <ScrollView

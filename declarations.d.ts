@@ -30,3 +30,10 @@ declare module 'react-native-vector-icons/FontAwesome' {
   const EvilIcons: ComponentType<IconProps>;
   export default FontAwesome;
 }
+
+declare module 'react-native-vector-icons/MaterialCommunityIcons' {
+  import {ComponentType} from 'react';
+  import {IconProps} from 'react-native-vector-icons/Icon';
+  const EvilIcons: ComponentType<IconProps>;
+  export default MaterialCommunityIcons;
+}

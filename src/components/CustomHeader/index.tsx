@@ -1,9 +1,11 @@
 import {Colors, dynamicSize} from '@/src/config';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useTheme} from '@react-navigation/native';
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import logo from '@/src/assets/logo.png';
+import logoLight from '@/src/assets/lightLogo.png';
+import logoDark from '@/src/assets/darkLogo.png';
 
 type props = {
   text?: string;
@@ -26,6 +28,9 @@ export const CustomHeader = ({
   onPress,
 }: props): React.JSX.Element => {
   const navigate = useNavigation();
+  const {dark} = useTheme();
+
+  const currentLogo = dark ? logoLight : logoDark;
 
   const styles = StyleSheet.create({
     container: {
@@ -72,8 +77,9 @@ export const CustomHeader = ({
       justifyContent: 'center',
     },
     image: {
-      width: dynamicSize(70),
-      height: dynamicSize(70),
+      width: dynamicSize(90),
+      height: dynamicSize(90),
+      alignSelf: 'center',
       resizeMode: 'contain',
     },
   });
@@ -104,7 +110,7 @@ export const CustomHeader = ({
       </View>
       <Text style={[styles.titleText]}>{text}</Text>
       <View style={[styles.containerImage]}>
-        <Image style={styles.image} source={logo} />
+        <Image style={styles.image} source={currentLogo} />
       </View>
     </View>
   );

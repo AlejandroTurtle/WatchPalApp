@@ -1,25 +1,57 @@
 import {Alert} from '@/src/components/Alert';
-
 import {profileContext} from '@/src/context/profileContext';
 import {getToken} from '@/src/libs/Firebase/messaging';
 import {api} from '@/src/services/api';
 import {UserLoginDTO, UserProfile} from '@/src/types/Auth';
 import {PropsScreen} from '@/src/types/Navigation';
-import {validarEmail} from '@/src/utils/validarEmail';
+import {validarEmail} from '@/src/utils/Validators';
 import {useEffect, useState} from 'react';
 import {BackHandler} from 'react-native';
+import {useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+type FormFields = {
+  email: string;
+  password: string;
+};
 
 export const useIndex = ({navigation, route}: PropsScreen) => {
   const params = route.params as UserLoginDTO;
-  const defaultUser: UserLoginDTO = {
-    email: '',
-    senha: '',
-  };
-
-  const [user, setUser] = useState<UserLoginDTO>(defaultUser);
   const {saveProfile} = profileContext();
   const [isLoading, setLoading] = useState(false);
   const [alert, setAlert] = useState<Alert>(null);
+
+  const SchemaValidation = yup
+    .object({
+      email: yup
+        .string()
+        .email('E‑mail inválido')
+        .required('E‑mail é obrigatório')
+        .test(
+          'validar-email',
+          'Preencha um e‑mail válido',
+          value => !!value && validarEmail(value),
+        ),
+      password: yup
+        .string()
+        .min(6, 'Mínimo 6 caracteres')
+        .required('Senha é obrigatória'),
+    })
+    .required();
+
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+    setValue,
+  } = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    resolver: yupResolver(SchemaValidation),
+  });
 
   useEffect(() => {
     const backAction = () => {
@@ -37,11 +69,8 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
 
   useEffect(() => {
     if (__DEV__) {
-      setUser({
-        ...user,
-        email: 'alejandrogomes23@hotmail.com',
-        senha: 'k8v674223',
-      });
+      setValue('email', 'alejandrogomes23@hotmail.com');
+      setValue('password', 'k8v674223');
     }
   }, []);
 
@@ -57,53 +86,26 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     },
   };
 
-  const setError = (key: keyof UserLoginDTO, message: string) => {
-    setUser(prevUser => ({
-      ...prevUser,
-      error: {
-        ...prevUser.error,
-        [key]: message,
-      },
-    }));
-  };
-
   useEffect(() => {
     if (params) {
-      setUser({
-        ...user,
-        email: params.email,
-        senha: params.senha,
-      });
+      setValue('email', params.email || '');
+      setValue('password', params.senha || '');
     }
   }, [params]);
 
-  const validation = async () => {
-    if (!user.email) {
-      setError('email', texts.errors.emptyfield);
-      return false;
-    } else if (!validarEmail(user.email)) {
-      setError('email', texts.errors.invalidemail);
-      return false;
-    } else if (!user.senha) {
-      setError('senha', texts.errors.emptyfield);
-      return false;
-    }
-    return true;
-  };
-
-  const requestLogin = async () => {
+  const requestLogin = async (data: FormFields) => {
     setLoading(true);
 
     const body = {
-      email: user.email.toLowerCase().trim(),
-      password: user.senha,
+      email: data.email.toLowerCase().trim(),
+      password: data.password,
     };
 
     let response = await api.post<UserProfile>('/usuarios/Login', body);
 
     if (response.success) {
-      const data = response?.data as UserProfile;
-      saveProfile(data);
+      const _data = response?.data as UserProfile;
+      saveProfile(_data);
       navigation.reset({
         index: 0,
         routes: [{name: 'Tabs'}],
@@ -117,18 +119,13 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     setLoading(false);
   };
 
-  const nextScreen = async () => {
-    let isPassed = await validation();
-    isPassed && (await requestLogin());
-  };
-
   return {
-    user,
-    setUser,
+    control,
+    handleSubmit,
     isLoading,
     alert,
     setAlert,
-    nextScreen,
     texts,
+    requestLogin,
   };
 };

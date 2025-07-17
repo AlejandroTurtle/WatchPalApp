@@ -1,20 +1,27 @@
-import React from 'react';
-import {StatusBar, StyleSheet} from 'react-native';
+import React, {useEffect} from 'react';
+import {Platform, StatusBar, StyleSheet, useColorScheme} from 'react-native';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {
   NavigationContainer,
-  DefaultTheme,
-  Theme,
+  DefaultTheme as NavigationDefaultTheme,
+  DarkTheme as NavigationDarkTheme,
+  Theme as NavigationTheme,
 } from '@react-navigation/native';
+import {
+  Provider as PaperProvider,
+  DefaultTheme as PaperDefault,
+  MD3DarkTheme as PaperDark,
+  MD3Theme,
+} from 'react-native-paper';
 
 import {Start} from './src/screens/Start';
 import {AuthStack} from './src/screens/Auth/AuthStack';
 import {Tabs} from './src/screens/Tabs/TabsStack';
-
 import {CustomScreens} from './src/components/CustomScreens';
 import {AppProfileContext} from './src/context/profileContext';
+
 import {screenType} from './src/types/Navigation';
-import {Colors} from './src/config';
+import {DarkColors, LightColors} from './src/config';
 
 const screens: screenType[] = [
   {name: 'Start', component: Start},
@@ -22,38 +29,45 @@ const screens: screenType[] = [
   {name: 'Tabs', component: Tabs},
 ];
 
-// Custom theme for React Navigation
-const AppTheme: Theme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    background: Colors.background,
-    text: Colors.black,
-    primary: Colors.white,
-  },
-};
+const App: React.FC = () => {
+  const scheme = useColorScheme();
 
-const App: React.FC = () => (
-  <SafeAreaProvider>
-    <StatusBar
-      barStyle="light-content"
-      backgroundColor={Colors.black}
-      translucent={false}
-    />
-    <SafeAreaView style={styles.container}>
-      <AppProfileContext>
-        <NavigationContainer theme={AppTheme}>
-          <CustomScreens screens={screens} />
-        </NavigationContainer>
-      </AppProfileContext>
-    </SafeAreaView>
-  </SafeAreaProvider>
-);
+  const appColors = scheme === 'dark' ? DarkColors : LightColors;
+
+  const navigationTheme: NavigationTheme = {
+    ...(scheme === 'dark' ? NavigationDarkTheme : NavigationDefaultTheme),
+    colors: {
+      ...(scheme === 'dark'
+        ? NavigationDarkTheme.colors
+        : NavigationDefaultTheme.colors),
+      background: appColors.background,
+      text: appColors.black,
+    },
+  };
+
+  return (
+    <SafeAreaProvider>
+      <StatusBar
+        barStyle={scheme === 'dark' ? 'light-content' : 'dark-content'}
+        backgroundColor={appColors.background}
+      />
+      <SafeAreaView
+        style={[styles.container, {backgroundColor: appColors.background}]}>
+        <AppProfileContext>
+          <NavigationContainer theme={navigationTheme}>
+            <PaperProvider>
+              <CustomScreens screens={screens} />
+            </PaperProvider>
+          </NavigationContainer>
+        </AppProfileContext>
+      </SafeAreaView>
+    </SafeAreaProvider>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background,
   },
 });
 

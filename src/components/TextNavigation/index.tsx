@@ -1,4 +1,5 @@
 import {Colors, dynamicSize} from '@/src/config';
+import {useTheme} from '@react-navigation/native';
 import React from 'react';
 import {Text, TouchableOpacity, StyleSheet, View} from 'react-native';
 
@@ -13,6 +14,8 @@ const TextNavigation: React.FC<TextNavigationProps> = ({
   text2,
   onPress,
 }) => {
+  const {colors} = useTheme();
+
   const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
@@ -23,7 +26,7 @@ const TextNavigation: React.FC<TextNavigationProps> = ({
     },
     text: {
       fontSize: dynamicSize(16),
-      color: Colors.white,
+      color: colors.text,
       fontFamily: 'Poppins-Regular',
     },
     link: {

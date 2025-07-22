@@ -19,7 +19,6 @@ export type PropsCustomShowFavorites = {
 };
 
 export const useIndex = ({navigation, route}: PropsScreen) => {
-  const [myFavorites, setMyFavorites] = useState<number[]>([]);
   const [favorites, setFavorites] = useState<PropsCustomShowFavorites[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [alert, setAlert] = useState<Alert>(null);
@@ -37,11 +36,16 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     }
 
     if (response.success && response.data) {
-      const ids = response.data.map(item => item.tituloId);
-      setMyFavorites(ids);
+      const idsWithType = response.data.map(item => ({
+        id: item.tituloId,
+        type: item.type,
+      }));
 
-      if (ids.length > 0) {
-        const results = await Promise.all(ids.map(fetchMedia));
+      if (idsWithType.length > 0) {
+        const results = await Promise.all(
+          idsWithType.map(({id, type}) => fetchMedia(id, type ?? 'movie')),
+        );
+        console.log('Resultados obtidos:', JSON.stringify(results, null, 2));
         setFavorites(results);
       } else {
         setFavorites([]);
@@ -51,22 +55,19 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     setLoading(false);
   };
 
-  const fetchMedia = async (id: number) => {
-    const tryFetch = async (type: 'movie' | 'tv') => {
-      const res = await fetch(`${baseUrl}/${type}/${id}?language=pt-BR`, {
-        headers: {Authorization: theMovieKey},
-      });
-      if (!res.ok) {
-        throw res;
-      }
-      return res.json();
-    };
-
-    try {
-      return await tryFetch('movie');
-    } catch (errMovie) {
-      return await tryFetch('tv');
+  const fetchMedia = async (id: number, type: string) => {
+    const res = await fetch(`${baseUrl}/${type}/${id}?language=pt-BR`, {
+      headers: {Authorization: theMovieKey},
+    });
+    if (!res.ok) {
+      throw res;
     }
+    const data = await res.json();
+    // await console.log('resJSON', JSON.stringify(res.json()), null, 2);
+    return {
+      ...data,
+      type, // <- aqui adicionamos
+    } as PropsCustomShowFavorites;
   };
 
   useFocusEffect(

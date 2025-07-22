@@ -4,6 +4,8 @@ import {TextInput, TextInputProps} from 'react-native-paper';
 import {Controller, Control} from 'react-hook-form';
 import {Colors} from '../../config';
 import {useTheme} from '@react-navigation/native';
+import MaskInput from 'react-native-mask-input';
+import {Masks, MasksTypes} from '@/src/utils/Masks';
 
 interface PropsInput extends TextInputProps {
   label: string;
@@ -12,6 +14,9 @@ interface PropsInput extends TextInputProps {
   placeholder?: string;
   right?: React.ReactNode;
   secureTextEntry?: boolean;
+  mask?: MasksTypes;
+  onSubmitEditing?: () => void;
+  closed?: boolean;
 }
 
 export const CustomInput = ({
@@ -21,6 +26,9 @@ export const CustomInput = ({
   placeholder,
   right,
   secureTextEntry,
+  mask,
+  onSubmitEditing,
+  closed = false,
   ...rest
 }: PropsInput) => {
   const {colors} = useTheme();
@@ -38,9 +46,22 @@ export const CustomInput = ({
             onBlur={onBlur}
             mode="outlined"
             secureTextEntry={secureTextEntry}
-            right={right}
+            right={
+              closed && value ? (
+                <TextInput.Icon
+                  icon="close-circle"
+                  onPress={() => onChange('')}
+                  color={Colors.gray}
+                />
+              ) : (
+                right
+              )
+            }
+            render={props => <MaskInput {...props} mask={Masks[mask!]} />}
             error={!!error}
             placeholderTextColor={colors.text}
+            onSubmitEditing={onSubmitEditing}
+            returnKeyType="search"
             placeholder={placeholder}
             theme={{
               colors: {

@@ -9663,6 +9663,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-mask-input@npm:^1.2.3":
+  version: 1.2.3
+  resolution: "react-native-mask-input@npm:1.2.3"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 245e74342430b25826459c0c89368d32afc2bea95b5894216d650f3c116cf8cb89baec5c29443694d08c7c2e27e18c1932314032bd4ff52cf4eef8b8a8325a69
+  languageName: node
+  linkType: hard
+
 "react-native-modern-datepicker@npm:^1.0.0-beta.91":
   version: 1.0.0-beta.91
   resolution: "react-native-modern-datepicker@npm:1.0.0-beta.91"
@@ -11366,6 +11376,7 @@ __metadata:
     react-native-get-location: ^5.0.0
     react-native-image-picker: ^8.2.0
     react-native-keyboard-aware-scroll-view: ^0.9.5
+    react-native-mask-input: ^1.2.3
     react-native-modern-datepicker: ^1.0.0-beta.91
     react-native-paper: ^5.14.5
     react-native-permissions: ^5.4.0

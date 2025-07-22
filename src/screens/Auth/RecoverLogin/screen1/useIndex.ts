@@ -3,21 +3,13 @@
 import {Alert} from '@/src/components/Alert';
 import {api} from '@/src/services/api';
 import {PropsScreen} from '@/src/types/Navigation';
-import {useEffect, useState} from 'react';
-
-type UserDTO = {
-  email: string;
-  error?: {
-    email?: string;
-  };
-};
-
-const defaultUser: UserDTO = {
-  email: '',
-};
+import {validarEmail} from '@/src/utils/Validators';
+import {yupResolver} from '@hookform/resolvers/yup';
+import {useState} from 'react';
+import {useForm} from 'react-hook-form';
+import * as yup from 'yup';
 
 export const useIndex = ({navigation, route}: PropsScreen) => {
-  const [user, setUser] = useState<UserDTO>(defaultUser);
   const [isLoading, setLoading] = useState(false);
   const [alert, setAlert] = useState<Alert>(null);
 
@@ -33,31 +25,33 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     },
   };
 
-  const setError = (key: keyof UserDTO, message: string) => {
-    setUser(prevUser => ({
-      ...prevUser,
-      error: {
-        ...prevUser.error,
-        [key]: message,
-      },
-    }));
-  };
+  const SchemaValidation = yup.object({
+    email: yup
+      .string()
+      .email('E‑mail inválido')
+      .required('E‑mail é obrigatório')
+      .test(
+        'validar-email',
+        'Preencha um e‑mail válido',
+        value => !!value && validarEmail(value),
+      ),
+  });
 
-  const validation = async () => {
-    if (!user.email) {
-      setError('email', texts.errors.emptyfield);
-      return false;
-    } else if (!validarEmail(user.email)) {
-      setError('email', texts.errors.invalidemail);
-      return false;
-    }
-    return true;
-  };
-
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+    getValues,
+  } = useForm({
+    defaultValues: {
+      email: '',
+    },
+    resolver: yupResolver(SchemaValidation),
+  });
   const request = async () => {
     setLoading(true);
     const body = {
-      email: user.email.toLowerCase().trim(),
+      email: getValues('email').toLowerCase().trim(),
     };
     let response = await api.post<{codigo: string}>(
       '/usuarios/EmailRecuperarSenha',
@@ -69,7 +63,7 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
         title: 'Sucesso',
         message: 'Código enviado com sucesso',
         onPress: () =>
-          navigation.navigate('RecoverLogin2', {email: user.email}),
+          navigation.navigate('RecoverLogin2', {email: body.email}),
       });
     } else {
       setAlert({
@@ -79,18 +73,13 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     }
   };
 
-  const nextScreen = async () => {
-    let isPassed = await validation();
-    isPassed && (await request());
-  };
-
   return {
-    user,
-    setUser,
     isLoading,
     alert,
     setAlert,
-    nextScreen,
     texts,
+    control,
+    handleSubmit,
+    request,
   };
 };

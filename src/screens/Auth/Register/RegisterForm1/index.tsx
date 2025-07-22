@@ -29,17 +29,11 @@ import {CustomTextWithNavigation} from '@/src/components/CustomTextWithNavigatio
 import {CustomRadio} from '@/src/components/CustomRadio';
 import {CustomButton} from '@/src/components/CustomButton';
 import {CustomAlert} from '@/src/components/Alert';
-import {useForm} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import {validarEmail} from '@/src/utils/Validators';
 import {TextInput} from 'react-native-paper';
 import Feather from 'react-native-vector-icons/Feather';
 import {useTheme} from '@react-navigation/native';
 export const RegisterForm1 = ({navigation, route}: PropsScreen) => {
   const {
-    user,
-    setUser,
     isLoading,
     alert,
     setAlert,
@@ -49,6 +43,11 @@ export const RegisterForm1 = ({navigation, route}: PropsScreen) => {
     aceito,
     setAceito,
     setPhotoChanged,
+    setFoto,
+    foto,
+    aceitoError,
+    control,
+    handleSubmit,
   } = useIndex({navigation, route});
 
   const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -59,7 +58,7 @@ export const RegisterForm1 = ({navigation, route}: PropsScreen) => {
   const styles = StyleSheet.create({
     title: {
       fontSize: dynamicSize(30),
-      color: Colors.white,
+      color: colors.text,
       fontWeight: 'bold',
       marginBottom: dynamicSize(5),
     },
@@ -70,51 +69,6 @@ export const RegisterForm1 = ({navigation, route}: PropsScreen) => {
     },
   });
 
-  const SchemaValidation = yup.object({
-    nome: yup.string().required('Nome é obrigatório'),
-    celular: yup.string().required('Celular é obrigatório'),
-    email: yup
-      .string()
-      .email('E‑mail inválido')
-      .required('E‑mail é obrigatório')
-      .test(
-        'validar-email',
-        'Preencha um e‑mail válido',
-        value => !!value && validarEmail(value),
-      ),
-    confirmarEmail: yup
-      .string()
-      .email('E‑mail inválido')
-      .required('Confirmação de e‑mail é obrigatória')
-      .oneOf([yup.ref('email')], 'Os e‑mails não coincidem'),
-    senha: yup
-      .string()
-      .min(6, 'Mínimo 6 caracteres')
-      .required('Senha é obrigatória'),
-    confirmarSenha: yup
-      .string()
-      .min(6, 'Mínimo 6 caracteres')
-      .required('Confirmação de senha é obrigatória')
-      .oneOf([yup.ref('senha')], 'As senhas não coincidem'),
-  });
-
-  const {
-    control,
-    handleSubmit,
-    formState: {errors},
-    setValue,
-  } = useForm({
-    defaultValues: {
-      email: '',
-      senha: '',
-      nome: '',
-      celular: '',
-      confirmarEmail: '',
-      confirmarSenha: '',
-    },
-    resolver: yupResolver(SchemaValidation),
-  });
-
   return (
     <CustomScreenContainer>
       <CustomHeader />
@@ -123,15 +77,16 @@ export const RegisterForm1 = ({navigation, route}: PropsScreen) => {
         <CustomText children="Crie sua conta para continuar." />
       </View>
       <CustomImagePicker
-        image={user?.foto}
-        onImageSelected={uri => {
-          setUser(prev => ({
-            ...prev,
-            foto: uri,
-          }));
+        image={foto}
+        onImageSelected={asset => {
+          setFoto({
+            uri: asset.uri ?? '',
+            fileName: asset.fileName,
+            type: asset.type,
+          });
           setPhotoChanged(true);
         }}
-        error={!user?.foto ? 'Selecione uma imagem' : undefined}
+        error={!foto ? 'Selecione uma imagem' : undefined}
       />
       <CustomInput
         label="Nome"
@@ -145,6 +100,8 @@ export const RegisterForm1 = ({navigation, route}: PropsScreen) => {
         name="celular"
         placeholder="Digite seu celular"
         control={control}
+        keyboardType="phone-pad"
+        mask="phone"
         maxLength={15}
       />
 
@@ -164,8 +121,9 @@ export const RegisterForm1 = ({navigation, route}: PropsScreen) => {
       />
       <CustomInput
         label="Senha"
-        name="password"
+        name="senha"
         placeholder="Digite sua senha"
+        autoCapitalize="none"
         control={control}
         secureTextEntry={secureTextEntry}
         right={
@@ -188,6 +146,7 @@ export const RegisterForm1 = ({navigation, route}: PropsScreen) => {
         placeholder="Confirmação de senha"
         control={control}
         secureTextEntry={confirmSecureTextEntry}
+        autoCapitalize="none"
         right={
           <TextInput.Icon
             icon={() => (
@@ -210,9 +169,7 @@ export const RegisterForm1 = ({navigation, route}: PropsScreen) => {
         }}
       />
       <CustomRadio aceito={aceito} text="Eu li e aceito" onToggle={setAceito} />
-      {user.error?.aceito && (
-        <Text style={styles.errorText}>{user.error.aceito}</Text>
-      )}
+      {aceitoError && <Text style={styles.errorText}>{aceitoError}</Text>}
       <CustomButton
         title={texts.button}
         isLoading={isLoading}

@@ -13,6 +13,7 @@ type props = {
   green: string;
   newgray: string;
   gray100: string;
+  gray300: string;
   blue: string;
 };
 
@@ -23,6 +24,7 @@ export const Colors: props = {
   background: '#242C3B',
   gray: '#7E848D',
   gray200: '#666666',
+  gray300: '#808080',
   gray100: '#A1A1A1',
   red: '#FF0000FF',
   green: '#1FBB0AFF',

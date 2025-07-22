@@ -1,4 +1,5 @@
 import {Colors, dynamicSize} from '@/src/config';
+import {useTheme} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -10,6 +11,8 @@ type Props = {
 };
 
 export const CustomRadio = ({aceito, text, onToggle}: Props) => {
+  const {colors} = useTheme();
+
   const styles = StyleSheet.create({
     checkbox: {
       marginRight: dynamicSize(5),
@@ -22,7 +25,7 @@ export const CustomRadio = ({aceito, text, onToggle}: Props) => {
     },
     checkoutText: {
       fontSize: dynamicSize(16),
-      color: Colors.white,
+      color: colors.text,
       flex: 1,
       textAlign: 'justify',
     },

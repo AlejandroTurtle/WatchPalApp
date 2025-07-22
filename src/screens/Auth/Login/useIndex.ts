@@ -11,11 +11,6 @@ import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-type FormFields = {
-  email: string;
-  password: string;
-};
-
 export const useIndex = ({navigation, route}: PropsScreen) => {
   const params = route.params as UserLoginDTO;
   const {saveProfile} = profileContext();
@@ -45,6 +40,7 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     handleSubmit,
     formState: {errors},
     setValue,
+    getValues,
   } = useForm({
     defaultValues: {
       email: '',
@@ -93,12 +89,11 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     }
   }, [params]);
 
-  const requestLogin = async (data: FormFields) => {
+  const requestLogin = async () => {
     setLoading(true);
-
     const body = {
-      email: data.email.toLowerCase().trim(),
-      password: data.password,
+      email: getValues('email').toLowerCase().trim(),
+      password: getValues('password'),
     };
 
     let response = await api.post<UserProfile>('/usuarios/Login', body);

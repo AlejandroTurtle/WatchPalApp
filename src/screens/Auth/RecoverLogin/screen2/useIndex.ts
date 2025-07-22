@@ -3,7 +3,11 @@
 import {Alert} from '@/src/components/Alert';
 import {api} from '@/src/services/api';
 import {PropsScreen} from '@/src/types/Navigation';
+import {validarEmail} from '@/src/utils/Validators';
+import {yupResolver} from '@hookform/resolvers/yup';
 import {useState} from 'react';
+import {useForm} from 'react-hook-form';
+import * as yup from 'yup';
 
 type UserDTO = {
   codigo: string;
@@ -26,6 +30,9 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
   const [isLoading, setLoading] = useState(false);
   const [alert, setAlert] = useState<Alert>(null);
 
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [confirmSecureTextEntry, setConfirmSecureTextEntry] = useState(true);
+
   const texts = {
     inputcode: 'Código',
     linkremenberpwd: 'Recordei minha senha',
@@ -39,36 +46,29 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     },
   };
 
-  const setError = (key: keyof UserDTO, message: string) => {
-    setUser(prevUser => ({
-      ...prevUser,
-      error: {
-        ...prevUser.error,
-        [key]: message,
-      },
-    }));
-  };
+  const SchemaValidation = yup.object({
+    email: yup
+      .string()
+      .email('E‑mail inválido')
+      .required('E‑mail é obrigatório')
+      .test(
+        'validar-email',
+        'Preencha um e‑mail válido',
+        value => !!value && validarEmail(value),
+      ),
+  });
 
-  const validation = async () => {
-    if (!user.codigo) {
-      setError('codigo', texts.errors.emptyfield);
-      return false;
-    }
-    if (!user.password) {
-      setError('password', texts.errors.emptyfield);
-      return false;
-    }
-    if (!user.confirmPassword) {
-      setError('confirmPassword', texts.errors.emptyfield);
-      return false;
-    }
-    if (user.password !== user.confirmPassword) {
-      setError('confirmPassword', 'As senhas não coincidem');
-      return false;
-    }
-    return true;
-  };
-
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+    getValues,
+  } = useForm({
+    defaultValues: {
+      email: '',
+    },
+    resolver: yupResolver(SchemaValidation),
+  });
   const requestNewPassword = async () => {
     setLoading(true);
     const body = {
@@ -95,11 +95,6 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     setLoading(false);
   };
 
-  const nextScreen = async () => {
-    let isPassed = await validation();
-    isPassed && (await requestNewPassword());
-  };
-
   const resendCode = async () => {
     const body = {
       email: params.email,
@@ -124,8 +119,14 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     isLoading,
     alert,
     setAlert,
-    nextScreen,
     texts,
     resendCode,
+    secureTextEntry,
+    setSecureTextEntry,
+    control,
+    handleSubmit,
+    requestNewPassword,
+    confirmSecureTextEntry,
+    setConfirmSecureTextEntry,
   };
 };

@@ -47,84 +47,9 @@ export const Start = ({navigation}: PropsScreen) => {
   useEffect(() => {
     req();
     requestNotificationPermission();
-    // getCurrentLocation();
   }, []);
 
-  // const requestLocationPermission = async (): Promise<string> => {
-  //     if (Platform.OS === 'android') {
-  //         const granted = await PermissionsAndroid.request(
-  //             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-  //         );
-
-  //         if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-  //             Alert.alert('Erro', 'Libre a permissão', [
-  //                 {text: 'CANCELAR', onPress: () => {}},
-  //                 {
-  //                     text: 'ACESSE AS CONFIGURAÇÕES',
-  //                     onPress: () => {
-  //                         GetLocation.openSettings();
-  //                     },
-  //                 },
-  //             ]);
-  //         }
-  //         return granted;
-  //     } else {
-  //         const granted = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
-  //         if (granted === RESULTS.DENIED) {
-  //             Alert.alert('Erro', 'Libre a permissão', [
-  //                 {text: 'CANCELAR', onPress: () => {}},
-  //                 {
-  //                     text: 'ACESSE AS CONFIGURAÇÕES',
-  //                     onPress: () => {
-  //                         GetLocation.openSettings();
-  //                     },
-  //                 },
-  //             ]);
-  //         }
-  //         if (granted !== RESULTS.GRANTED) {
-  //             Alert.alert('Erro', 'Libre a permissão', [
-  //                 {text: 'CANCELAR', onPress: () => {}},
-  //                 {
-  //                     text: 'ACESSE AS CONFIGURAÇÕES',
-  //                     onPress: () => {
-  //                         GetLocation.openSettings();
-  //                     },
-  //                 },
-  //             ]);
-  //         }
-  //         return granted;
-  //     }
-  // };
-
-  // // Função para obter a localização atual
-  // const getCurrentLocation = async (): Promise<
-  //     Location | {error: string}
-  // > => {
-  //     const hasPermission = await requestLocationPermission();
-
-  //     if (hasPermission !== RESULTS.GRANTED) {
-  //         return {
-  //             error: 'Permissão de localização negada, libere a permissão para podermos encontrar outras pessoas',
-  //         };
-  //     }
-
-  //     const location = await GetLocation.getCurrentPosition({
-  //         enableHighAccuracy: true,
-  //         timeout: 60000,
-  //     });
-
-  //     // //-----------------------------------------------
-  //     // if (__DEV__) {
-  //     //     location.latitude = -19.938065153126825;
-  //     //     location.longitude = -43.90338937241653;
-  //     // }
-  //     // //-----------------------------------------------
-
-  //     return location;
-  // };
-
   const requestNotificationPermission = async () => {
-    let authorizationStatus;
     let [deviceVersion] = DeviceInfo.getSystemVersion().split('.');
     if (Platform.OS === 'android') {
       try {
@@ -141,10 +66,6 @@ export const Start = ({navigation}: PropsScreen) => {
     } else {
       authorizationStatus = await messaging().requestPermission();
     }
-  };
-
-  const nextScreen = (name: string, params?: any) => {
-    navigation.navigate(name, params);
   };
 
   return (

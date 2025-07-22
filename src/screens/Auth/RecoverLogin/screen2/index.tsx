@@ -1,18 +1,9 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React from 'react';
-import {ScrollView, Text, View} from 'react-native';
-import {styles} from '../styles';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useIndex} from './useIndex';
 import VerificationCodeInput from './Extends/VerificationCodeInput';
 
-import {ThemeContext} from '@react-navigation/native';
+import {ThemeContext, useTheme} from '@react-navigation/native';
 import {PropsScreen} from '@/src/types/Navigation';
 import {CustomScreenContainer} from '@/src/components/CustomScreenContainer';
 import {CustomHeader} from '@/src/components/CustomHeader';
@@ -20,8 +11,10 @@ import {CustomText} from '@/src/components/CustomText';
 import {CustomInput} from '@/src/components/CustomInput';
 import {CustomButton} from '@/src/components/CustomButton';
 import {CustomTextWithNavigation} from '@/src/components/CustomTextWithNavigation';
-import {Colors, dynamicSize} from '@/src/config';
+import {Colors, dynamicSize, sizeScreen} from '@/src/config';
 import {CustomAlert} from '@/src/components/Alert';
+import {TextInput} from 'react-native-paper';
+import Feather from 'react-native-vector-icons/Feather';
 
 export const RecoverLogin2 = ({navigation, route}: PropsScreen) => {
   const {
@@ -30,9 +23,15 @@ export const RecoverLogin2 = ({navigation, route}: PropsScreen) => {
     isLoading,
     alert,
     setAlert,
-    nextScreen,
+    control,
+    handleSubmit,
+    requestNewPassword,
     texts,
+    secureTextEntry,
+    setSecureTextEntry,
     resendCode,
+    confirmSecureTextEntry,
+    setConfirmSecureTextEntry,
   } = useIndex({
     navigation,
     route,
@@ -44,6 +43,54 @@ export const RecoverLogin2 = ({navigation, route}: PropsScreen) => {
       codigo: code,
     }));
   };
+
+  const {colors} = useTheme();
+
+  const styles = StyleSheet.create({
+    containerImage: {
+      alignSelf: 'center',
+      height: sizeScreen.height * 0.5,
+      width: sizeScreen.width,
+    },
+    buttons: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      width: '100%',
+    },
+    image: {
+      width: '100%',
+      height: '100%',
+      resizeMode: 'cover',
+    },
+    containerTable: {
+      position: 'absolute',
+      top: 30,
+      left: 0,
+      right: 0,
+      zIndex: 1,
+    },
+    containerCode: {
+      padding: dynamicSize(30),
+    },
+    container: {
+      justifyContent: 'center',
+    },
+    titleText: {
+      fontSize: dynamicSize(24),
+      fontFamily: 'Poppins-Bold',
+      fontWeight: '400',
+      textAlign: 'left',
+      marginBottom: dynamicSize(10),
+      color: colors.text,
+    },
+    subTitleText: {
+      fontSize: dynamicSize(14),
+      textAlign: 'left',
+      color: Colors.gray,
+      fontFamily: 'Poppins-Medium',
+      marginBottom: dynamicSize(10),
+    },
+  });
 
   return (
     <CustomScreenContainer>
@@ -65,35 +112,62 @@ export const RecoverLogin2 = ({navigation, route}: PropsScreen) => {
           />
         </View>
         <CustomInput
-          title={texts.inputpassword}
-          keyName="password"
-          value={[user, setUser]}
-          icon="lock"
-          secureTextEntry
+          label="Senha"
+          name="senha"
+          placeholder="Insira sua senha"
+          right={
+            <TextInput.Icon
+              icon={() => (
+                <Feather
+                  name={secureTextEntry ? 'eye-off' : 'eye'}
+                  size={20}
+                  color={colors.text}
+                />
+              )}
+              onPress={() => setSecureTextEntry(!secureTextEntry)}
+              forceTextInputFocus={false}
+            />
+          }
+          control={control}
         />
         <CustomInput
-          title={texts.inputconfirmpassword}
-          keyName="confirmPassword"
-          value={[user, setUser]}
-          icon="lock"
+          label="Confirmar Senha"
+          name="confirmarSenha"
+          placeholder="Confirme sua senha"
           secureTextEntry
+          right={
+            <TextInput.Icon
+              icon={() => (
+                <Feather
+                  name={confirmSecureTextEntry ? 'eye-off' : 'eye'}
+                  size={20}
+                  color={colors.text}
+                />
+              )}
+              onPress={() => setConfirmSecureTextEntry(!confirmSecureTextEntry)}
+              forceTextInputFocus={false}
+            />
+          }
+          control={control}
         />
         <CustomButton
           title={texts.button}
           isLoading={isLoading}
-          onPress={nextScreen}
+          onPress={handleSubmit(requestNewPassword)}
           alignItems="flex-end"
           mv={20}
         />
         <CustomTextWithNavigation
           text={texts.linkremenberpwd}
-          onPress={() => navigation.navigate('Login')}
+          onPress={() =>
+            navigation.reset({index: 0, routes: [{name: 'AuthStack'}]})
+          }
         />
         <View style={{alignItems: 'center', marginTop: 20}}>
           <Text
             style={{
               fontSize: dynamicSize(16),
-              color: Colors.white,
+              color: colors.text,
               fontFamily: 'Poppins-Regular',
             }}>
             Ainda não recebeu o código?

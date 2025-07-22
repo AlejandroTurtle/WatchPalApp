@@ -9,16 +9,6 @@ export type UserCreateDTO = {
   senha: string;
   confirmarSenha: string;
   foto: ImagePickerResult;
-  error?: {
-    nome?: string;
-    celular?: string;
-    email?: string;
-    confirmarEmail?: string;
-    senha?: string;
-    confirmarSenha?: string;
-    aceito?: string;
-    foto: ImagePickerResult;
-  };
 };
 
 export type ImagePickerResponse = {
@@ -30,10 +20,6 @@ export type ImagePickerResponse = {
 export type UserLoginDTO = {
   email: string;
   senha: string;
-  error?: {
-    email?: string;
-    senha?: string;
-  };
 };
 
 export type UserProfile = {
@@ -53,6 +39,7 @@ export type Favorites = {
   titulo: string;
   numberSeasons?: number;
   numberEpisodes?: number;
+  type?: string;
 };
 
 export type User = {

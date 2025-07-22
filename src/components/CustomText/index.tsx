@@ -7,6 +7,7 @@
  */
 
 import {Colors} from '@/src/config';
+import {useTheme} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, Text, useColorScheme} from 'react-native';
 
@@ -16,12 +17,10 @@ type Props = {
 };
 
 export const CustomText = ({children, style}: Props): React.JSX.Element => {
-  const colorScheme = useColorScheme(); // Determines if dark mode is enabled
-
-  const dynamicColor = Colors.white;
+  const {colors} = useTheme();
 
   return (
-    <Text style={[styles.text, {color: dynamicColor}, style]}>{children}</Text>
+    <Text style={[styles.text, {color: colors.text}, style]}>{children}</Text>
   );
 };
 

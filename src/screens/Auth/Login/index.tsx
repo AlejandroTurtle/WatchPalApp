@@ -82,6 +82,7 @@ export const Login = ({navigation, route}: PropsScreen) => {
         placeholder="Digite sua senha"
         control={control}
         secureTextEntry={secureTextEntry}
+        autoCapitalize="none"
         right={
           <TextInput.Icon
             icon={() => (

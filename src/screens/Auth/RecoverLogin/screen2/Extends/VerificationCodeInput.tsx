@@ -1,4 +1,5 @@
 import {Colors} from '@/src/config';
+import {useTheme} from '@react-navigation/native';
 import React, {useRef, useState} from 'react';
 import {TextInput, View, StyleSheet} from 'react-native';
 
@@ -53,12 +54,7 @@ const VerificationCodeInput: React.FC<VerificationCodeInputProps> = ({
           style={[
             styles.input,
             {
-              borderColor:
-                focusedIndex === index
-                  ? Colors.blue
-                  : digit
-                  ? Colors.blue
-                  : Colors.white,
+              borderColor: focusedIndex === index ? Colors.blue : digit,
             },
           ]}
           value={digit}

@@ -16,6 +16,7 @@ import {Colors, dynamicSize} from '@/src/config';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {CustomAlert} from '@/src/components/Alert';
+import {CustomShowSeasons} from '@/src/components/CustomShowSeasons';
 
 export const Details = ({navigation, route}: PropsScreen) => {
   const {
@@ -26,6 +27,8 @@ export const Details = ({navigation, route}: PropsScreen) => {
     favorite,
     removeFavorite,
     loading,
+    episodes,
+    seasons,
   } = useIndex({
     navigation,
     route,
@@ -47,32 +50,48 @@ export const Details = ({navigation, route}: PropsScreen) => {
         showsVerticalScrollIndicator={false}>
         {data && (
           <>
-            <Text style={styles.title}>{data.original_title}</Text>
-            <Image
-              source={{
-                uri: `https://image.tmdb.org/t/p/w500${data.poster_path}`,
-              }}
-              style={styles.poster}
-            />
-            <Text style={styles.secondTitle}>Sinopse</Text>
-            <Text style={styles.sinopse}>{data.overview}</Text>
-            <View style={styles.bottomRow}>
-              <View style={styles.iconGroup}>
-                <Feather name="star" size={30} color="#FFD700" />
-                <Text style={styles.rating}>{data.vote_average}</Text>
-              </View>
-              <View style={styles.iconGroup}>
-                <TouchableOpacity
-                  onPress={favorite ? removeFavorite : addFavorite}>
-                  <FontAwesome
-                    name={favorite ? 'heart' : 'heart-o'}
+            <>
+              <Text style={styles.title}>
+                {data.original_title ?? data.name}
+              </Text>
+              <Image
+                source={{
+                  uri: `https://image.tmdb.org/t/p/w500${data.poster_path}`,
+                }}
+                style={styles.poster}
+              />
+              <Text style={styles.secondTitle}>Sinopse</Text>
+              <Text style={styles.sinopse}>
+                {data.overview || 'Desculpe, sem sinopse disponível.'}
+              </Text>
+              <View style={styles.bottomRow}>
+                <View style={styles.iconGroup}>
+                  <Feather
+                    name="star"
                     size={30}
-                    color={Colors.red}
+                    style={{marginBottom: 5}}
+                    color="#FFD700"
                   />
-                </TouchableOpacity>
-                <Text style={styles.rating}>Favoritar</Text>
+                  <Text style={styles.rating}>{data.vote_average}</Text>
+                </View>
+                <View style={styles.iconGroup}>
+                  <TouchableOpacity
+                    onPress={favorite ? removeFavorite : addFavorite}>
+                    <FontAwesome
+                      name={favorite ? 'heart' : 'heart-o'}
+                      size={30}
+                      color={Colors.red}
+                    />
+                  </TouchableOpacity>
+                  <Text style={styles.rating}>Favoritar</Text>
+                </View>
               </View>
-            </View>
+            </>
+            <CustomShowSeasons
+              seasons={seasons}
+              episodes={episodes}
+              tituloId={data.id}
+            />
           </>
         )}
       </ScrollView>

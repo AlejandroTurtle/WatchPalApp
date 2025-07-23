@@ -63,10 +63,9 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
       throw res;
     }
     const data = await res.json();
-    // await console.log('resJSON', JSON.stringify(res.json()), null, 2);
     return {
       ...data,
-      type, // <- aqui adicionamos
+      type,
     } as PropsCustomShowFavorites;
   };
 
@@ -80,6 +79,7 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     const response = await api.remove(`/media/remover-favorito/${favoriteId}`);
     if (response.success) {
       setFavorites(prev => prev.filter(fav => fav.id !== favoriteId));
+      console.log('removido');
       setAlert({
         title: 'Sucesso',
         message: 'Favorito removido com sucesso!',
@@ -95,5 +95,13 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
 
   const IMG_BASE = 'https://image.tmdb.org/t/p/w200';
 
-  return {favorites, IMG_BASE, unfavorite, goToDetails, loading};
+  return {
+    favorites,
+    IMG_BASE,
+    unfavorite,
+    goToDetails,
+    loading,
+    alert,
+    setAlert,
+  };
 };

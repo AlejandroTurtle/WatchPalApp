@@ -16,10 +16,7 @@ export const CheckBox: React.FC<CheckBoxProps> = ({
   onPress,
 }) => {
   return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={() => onPress(value)}
-      activeOpacity={0.7}>
+    <TouchableOpacity style={styles.container} onPress={() => onPress(value)}>
       <Feather
         name={checked ? 'check-circle' : 'circle'}
         size={20}

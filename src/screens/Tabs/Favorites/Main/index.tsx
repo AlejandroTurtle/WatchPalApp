@@ -14,9 +14,18 @@ import {CustomScreenContainer} from '@/src/components/CustomScreenContainer';
 import {CustomHeader} from '@/src/components/CustomHeader';
 import {Colors} from '@/src/config';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {CustomAlert} from '@/src/components/Alert';
 
 export const Favorites = ({navigation, route}: PropsScreen) => {
-  const {favorites, IMG_BASE, unfavorite, goToDetails, loading} = useIndex({
+  const {
+    favorites,
+    IMG_BASE,
+    unfavorite,
+    goToDetails,
+    loading,
+    alert,
+    setAlert,
+  } = useIndex({
     navigation,
     route,
   });
@@ -96,6 +105,7 @@ export const Favorites = ({navigation, route}: PropsScreen) => {
         }
         showsVerticalScrollIndicator={false}
       />
+      <CustomAlert alert={alert} setAlert={setAlert} />
     </>
   );
 };

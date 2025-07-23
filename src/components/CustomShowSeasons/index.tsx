@@ -6,10 +6,19 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import {api} from '@/src/services/api';
 import {CheckBox} from '../CheckBox';
+import {ProgressWatched} from '../ProgressWatched';
 type PropsCustomShowSeasons = {
   seasons: Seasons[];
   episodes: Episodes[];
   tituloId: number;
+};
+
+type ResponseWatchedEpisodes = {
+  tituloId: number;
+  season: number;
+  episode: number;
+  duration: number;
+  watchedAt: string;
 };
 
 export const CustomShowSeasons = ({
@@ -44,7 +53,9 @@ export const CustomShowSeasons = ({
 
   useEffect(() => {
     const loadWatched = async () => {
-      const response = await api.get<any>('/media/episodios/assistidos');
+      const response = await api.get<ResponseWatchedEpisodes[]>(
+        '/media/episodios/assistidos',
+      );
       if (response.success && response.data) {
         const myKeys = response.data
           .filter(e => e.tituloId === tituloId)
@@ -58,17 +69,14 @@ export const CustomShowSeasons = ({
 
   async function markAsWatched(key: string, duration: number) {
     const [season, episode] = key.split('-').map(Number);
-    try {
-      await api.post('/media/episodios/assistidos', {
-        tituloId,
-        season,
-        episode,
-        duration,
-      });
-      setWatchedEpisodes(prev => [...prev, key]);
-    } catch (err) {
-      console.error('Erro marcando assistido', err);
-    }
+    const body = {
+      tituloId,
+      season,
+      episode,
+      duration,
+    };
+    await api.post('/media/episodios/assistidos', body);
+    setWatchedEpisodes(prev => [...prev, key]);
   }
 
   async function unmarkAsWatched(key: string) {
@@ -140,88 +148,114 @@ export const CustomShowSeasons = ({
     episodeInfo: {
       flex: 1,
     },
+    countEpisode: {
+      fontFamily: 'Poppins-SemiBold',
+      fontSize: 12,
+      color: Colors.white,
+      marginLeft: 5,
+    },
   });
 
   return (
     <View>
-      {seasons.map(season => {
-        const allEpisodes = episodes.filter(
-          episode => episode.season_number === season.season_number,
-        );
-        const isSeasonExpanded = expandedSeasons.includes(season.season_number);
-        return (
-          <View key={season.season_number}>
-            <TouchableOpacity
-              style={styles.row}
-              onPress={() => toggleSeason(season.season_number)}>
-              <Text style={styles.seasonTitle}>
-                Temporada {season.season_number}
-              </Text>
-              <Feather
-                name={isSeasonExpanded ? 'chevron-up' : 'chevron-down'}
-                size={30}
-                color={Colors.white}
-                style={{marginTop: 5, marginBottom: 10}}
-              />
-            </TouchableOpacity>
-            {isSeasonExpanded &&
-              allEpisodes.map(episode => {
-                const key = `${season.season_number}-${episode.episode_number}`;
-                const isEpExpanded = expandedEpisodes[key];
-                return (
-                  <View key={key} style={styles.episodeRow}>
-                    <CheckBox
-                      value={key}
-                      checked={watchedEpisodes.includes(key)}
-                      onPress={() => toggleWatched(key, episode.runtime)}
-                    />
+      {seasons
+        .filter(season => season.season_number !== 0) // <-- Adicionado filtro
+        .map(season => {
+          const allEpisodes = episodes.filter(
+            episode => episode.season_number === season.season_number,
+          );
+          const totalEps = allEpisodes.length;
+          const watchedCount = allEpisodes
+            .map(ep => `${season.season_number}-${ep.episode_number}`)
+            .filter(key => watchedEpisodes.includes(key)).length;
+          const progress = totalEps > 0 ? watchedCount / totalEps : 0;
+          const isSeasonExpanded = expandedSeasons.includes(
+            season.season_number,
+          );
+          return (
+            <View key={season.season_number}>
+              <TouchableOpacity
+                style={styles.row}
+                onPress={() => toggleSeason(season.season_number)}>
+                <Text style={styles.seasonTitle}>
+                  Temporada {season.season_number}
+                </Text>
+                <Feather
+                  name={isSeasonExpanded ? 'chevron-up' : 'chevron-down'}
+                  size={30}
+                  color={Colors.white}
+                  style={{marginTop: 5, marginBottom: 10}}
+                />
+              </TouchableOpacity>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <ProgressWatched progress={progress} />
 
-                    <View style={styles.episodeInfo}>
-                      <Text style={styles.episodeTitle}>
-                        Episódio {episode.episode_number}: {episode.name}
-                      </Text>
-                      <Text
-                        style={styles.descriptionEpisode}
-                        numberOfLines={isEpExpanded ? undefined : 1}>
-                        {episode.overview || 'Sem descrição.'}
-                      </Text>
-                      {episode.overview.length > 100 && (
-                        <TouchableOpacity
-                          onPress={() =>
-                            showDescription(
-                              season.season_number,
-                              episode.episode_number,
-                            )
-                          }>
-                          <Text
-                            style={[
-                              styles.descriptionEpisode,
-                              {
-                                fontFamily: 'Poppins-SemiBold',
-                                color: Colors.blue,
-                              },
-                            ]}>
-                            {isEpExpanded ? 'Ler menos' : 'Ler mais'}
-                          </Text>
-                        </TouchableOpacity>
-                      )}
-                      <View style={styles.rowTime}>
-                        <Feather
-                          name="clock"
-                          size={16}
-                          color={Colors.gray300}
-                        />
-                        <Text style={styles.timeEpisode}>
-                          {episode.runtime}min
+                <Text style={styles.countEpisode}>
+                  {watchedCount}/{totalEps}
+                </Text>
+              </View>
+              {isSeasonExpanded &&
+                allEpisodes.map(episode => {
+                  const key = `${season.season_number}-${episode.episode_number}`;
+                  const isEpExpanded = expandedEpisodes[key];
+                  return (
+                    <View key={key} style={styles.episodeRow}>
+                      <CheckBox
+                        value={key}
+                        checked={watchedEpisodes.includes(key)}
+                        onPress={() => toggleWatched(key, episode.runtime)}
+                      />
+
+                      <View style={styles.episodeInfo}>
+                        <Text style={styles.episodeTitle}>
+                          Episódio {episode.episode_number}: {episode.name}
                         </Text>
+                        <Text
+                          style={styles.descriptionEpisode}
+                          numberOfLines={isEpExpanded ? undefined : 1}>
+                          {episode.overview || 'Sem descrição.'}
+                        </Text>
+                        {episode.overview.length > 100 && (
+                          <TouchableOpacity
+                            onPress={() =>
+                              showDescription(
+                                season.season_number,
+                                episode.episode_number,
+                              )
+                            }>
+                            <Text
+                              style={[
+                                styles.descriptionEpisode,
+                                {
+                                  fontFamily: 'Poppins-SemiBold',
+                                  color: Colors.blue,
+                                },
+                              ]}>
+                              {isEpExpanded ? 'Ler menos' : 'Ler mais'}
+                            </Text>
+                          </TouchableOpacity>
+                        )}
+                        <View style={styles.rowTime}>
+                          <Feather
+                            name="clock"
+                            size={16}
+                            color={Colors.gray300}
+                          />
+                          <Text style={styles.timeEpisode}>
+                            {episode.runtime}min
+                          </Text>
+                        </View>
                       </View>
                     </View>
-                  </View>
-                );
-              })}
-          </View>
-        );
-      })}
+                  );
+                })}
+            </View>
+          );
+        })}
     </View>
   );
 };

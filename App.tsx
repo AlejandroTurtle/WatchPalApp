@@ -22,6 +22,7 @@ import {AppProfileContext} from './src/context/profileContext';
 
 import {screenType} from './src/types/Navigation';
 import {DarkColors, LightColors} from './src/config';
+import {SeriesProvider} from './src/context/useReducerSeries';
 
 const screens: screenType[] = [
   {name: 'Start', component: Start},
@@ -54,11 +55,13 @@ const App: React.FC = () => {
       <SafeAreaView
         style={[styles.container, {backgroundColor: appColors.background}]}>
         <AppProfileContext>
-          <NavigationContainer theme={navigationTheme}>
-            <PaperProvider>
-              <CustomScreens screens={screens} />
-            </PaperProvider>
-          </NavigationContainer>
+          <SeriesProvider>
+            <NavigationContainer theme={navigationTheme}>
+              <PaperProvider>
+                <CustomScreens screens={screens} />
+              </PaperProvider>
+            </NavigationContainer>
+          </SeriesProvider>
         </AppProfileContext>
       </SafeAreaView>
     </SafeAreaProvider>

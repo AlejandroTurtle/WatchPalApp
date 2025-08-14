@@ -110,7 +110,7 @@ export const CustomHeader = ({
       </View>
       <Text style={[styles.titleText]}>{text}</Text>
       <View style={[styles.containerImage]}>
-        <Image style={styles.image} source={currentLogo} />
+        <View />
       </View>
     </View>
   );

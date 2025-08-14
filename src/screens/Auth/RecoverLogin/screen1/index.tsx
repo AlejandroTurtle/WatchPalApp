@@ -37,7 +37,7 @@ export const RecoverLogin1 = ({navigation, route}: PropsScreen) => {
     subTitleText: {
       fontSize: dynamicSize(14),
       textAlign: 'left',
-      color: Colors.gray,
+      color: Colors.white,
       fontFamily: 'Poppins-Medium',
       marginBottom: dynamicSize(10),
     },

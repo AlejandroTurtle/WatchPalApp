@@ -5,47 +5,51 @@ import {getVersion} from 'react-native-device-info';
 import {Console} from '../utils/Console';
 import {API} from '../types/Api';
 
-const fetchApiUrl = async () => {
-  try {
-    const response = await fetch('http://192.168.0.159:3000/projetos/listar', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+const baseURL = 'https://watch-pal-api.vercel.app';
 
-    if (!response.ok) {
-      throw new Error(`Erro ${response.status}: ${response.statusText}`);
-    }
+// const fetchApiUrl = async () => {
+//   try {
+//     const response = await fetch('http://192.168.0.159:3000/projetos/listar', {
+//       method: 'GET',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//     });
 
-    const json = await response.json();
+//     console.log('response.status', response);
 
-    if (json?.error) {
-      Alert.alert('Erro de versão', json?.error, [
-        {
-          text: 'OK',
-          onPress: () => {},
-        },
-      ]);
-    }
+//     if (!response.ok) {
+//       throw new Error(`Erro ${response.status}: ${response.statusText}`);
+//     }
 
-    return json?.url;
-  } catch (error) {
-    console.error('Erro ao carregar dados:', error);
-    Alert.alert('Erro', 'Falha ao carregar dados', [
-      {
-        text: 'OK',
-        onPress: () => {},
-      },
-    ]);
-  }
-};
+//     const json = await response.json();
+
+//     if (json?.error) {
+//       Alert.alert('Erro de versão', json?.error, [
+//         {
+//           text: 'OK',
+//           onPress: () => {},
+//         },
+//       ]);
+//     }
+
+//     return json?.url;
+//   } catch (error) {
+//     console.error('Erro ao carregar dados:', error);
+//     Alert.alert('Erro', 'Falha ao carregar dados', [
+//       {
+//         text: 'OK',
+//         onPress: () => {},
+//       },
+//     ]);
+//   }
+// };
 async function get<T>(url: string, log?: boolean): Promise<API<T>> {
   const token = JSON.parse(
     (await AsyncStorage.getItem('token')) as any,
   ) as string;
   try {
-    const API_URL = await fetchApiUrl();
+    const API_URL = baseURL;
 
     const response = await fetch(API_URL + url, {
       method: 'GET',
@@ -74,7 +78,7 @@ async function post<T>(url: string, body: any, log?: boolean): Promise<API<T>> {
     (await AsyncStorage.getItem('token')) as any,
   ) as string;
   try {
-    const API_URL = await fetchApiUrl();
+    const API_URL = baseURL;
     const response = await fetch(API_URL + url, {
       method: 'POST',
       headers: {
@@ -113,7 +117,7 @@ async function form<T>(
     (JSON.parse((await AsyncStorage.getItem('token')) as string) as string);
 
   try {
-    const API_URL = await fetchApiUrl();
+    const API_URL = baseURL;
 
     const requestOptions: RequestInit = {
       method: 'POST',
@@ -155,7 +159,7 @@ async function put<T>(url: string, body?: any, log?: boolean): Promise<API<T>> {
     (await AsyncStorage.getItem('token')) as any,
   ) as string;
   try {
-    const API_URL = await fetchApiUrl();
+    const API_URL = baseURL;
 
     const response = await fetch(API_URL + url, {
       method: 'PUT',
@@ -196,7 +200,7 @@ async function remove<T>(url: string, log: boolean = false): Promise<API<T>> {
     (await AsyncStorage.getItem('token')) as any,
   ) as string;
   try {
-    const API_URL = await fetchApiUrl();
+    const API_URL = baseURL;
 
     const response = await fetch(API_URL + url, {
       method: 'DELETE',

@@ -47,6 +47,7 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [seasons, setSeasons] = useState<Seasons[]>([]);
   const [episodes, setEpisodes] = useState<Episodes[]>([]);
+  const [numberOfSeasons, setNumberOfSeasons] = useState<number>(0);
 
   useEffect(() => {
     const favoritos = profile?.favorites ?? [];
@@ -55,8 +56,6 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
 
     setFavorite(isFavorito);
   }, [profile?.favorites, filme.id]);
-
-  console.log('Filme selecionado:', JSON.stringify(filme.id, null, 2));
 
   let type;
 
@@ -104,7 +103,6 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
       titulo: filme.original_title ?? filme.original_name,
       type: filme.media_type,
     };
-    console.log('Adicionando favorito:', JSON.stringify(body, null, 2));
     const response = await api.post('/media/adicionar-favorito', body);
     if (response.success) {
       setFavorite(true);
@@ -146,6 +144,7 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
       const jsonSeasons: any = await respSeasons.json();
       const allSeasons: Seasons[] = jsonSeasons.seasons;
       setSeasons(allSeasons);
+      setNumberOfSeasons(jsonSeasons.number_of_seasons);
 
       const promises = allSeasons.map(season =>
         fetch(
@@ -186,5 +185,6 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     loading,
     episodes,
     seasons,
+    numberOfSeasons,
   };
 };

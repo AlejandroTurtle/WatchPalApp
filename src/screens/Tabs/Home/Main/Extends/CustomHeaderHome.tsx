@@ -1,18 +1,9 @@
 import React, {useEffect} from 'react';
-import {
-  ActivityIndicator,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {ActivityIndicator, Image, StyleSheet, Text, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
-
 import {Colors, dynamicSize} from '@/src/config';
 import {profileContext} from '@/src/context/profileContext';
-
 import avatar from '@/assets/avatar.png';
 
 export const CustomHeaderHome = ({onPress}: {onPress: () => void}) => {

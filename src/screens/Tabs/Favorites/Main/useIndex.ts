@@ -45,7 +45,6 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
         const results = await Promise.all(
           idsWithType.map(({id, type}) => fetchMedia(id, type ?? 'movie')),
         );
-        console.log('Resultados obtidos:', JSON.stringify(results, null, 2));
         setFavorites(results);
       } else {
         setFavorites([]);

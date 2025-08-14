@@ -9737,6 +9737,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-share@npm:^12.2.0":
+  version: 12.2.0
+  resolution: "react-native-share@npm:12.2.0"
+  checksum: 634e4d40f3a66fe20fe31e56027e34e2cc09225dc8a59464ad18984ee785a30a9dfb3fb895ebd6e60ecbd3f48d13b4c92970869c5bdb427f0e29c2e1699c2dff
+  languageName: node
+  linkType: hard
+
 "react-native-svg-transformer@npm:^1.5.0":
   version: 1.5.1
   resolution: "react-native-svg-transformer@npm:1.5.1"
@@ -11382,6 +11389,7 @@ __metadata:
     react-native-permissions: ^5.4.0
     react-native-safe-area-context: ^5.0.0
     react-native-screens: ^4.3.0
+    react-native-share: ^12.2.0
     react-native-svg: ^15.11.2
     react-native-svg-transformer: ^1.5.0
     react-native-vector-icons: latest

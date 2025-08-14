@@ -106,7 +106,9 @@ export const CustomAlert = ({alert, setAlert}: Props) => {
       alignItems: 'center',
     },
     cancelButton: {
-      backgroundColor: Colors.white,
+      backgroundColor: 'transparent',
+      borderWidth: 1,
+      borderColor: Colors.red,
     },
     confirmButton: {
       backgroundColor: 'transparent',
@@ -114,7 +116,7 @@ export const CustomAlert = ({alert, setAlert}: Props) => {
       borderColor: Colors.blue,
     },
     buttonText: {fontSize: 13},
-    cancelText: {color: Colors.white},
+    cancelText: {color: Colors.red},
     confirmText: {color: Colors.blue},
   });
 

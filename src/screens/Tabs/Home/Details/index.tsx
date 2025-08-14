@@ -29,6 +29,7 @@ export const Details = ({navigation, route}: PropsScreen) => {
     loading,
     episodes,
     seasons,
+    numberOfSeasons,
   } = useIndex({
     navigation,
     route,
@@ -91,6 +92,7 @@ export const Details = ({navigation, route}: PropsScreen) => {
               seasons={seasons}
               episodes={episodes}
               tituloId={data.id}
+              numberOfSeasons={numberOfSeasons}
             />
           </>
         )}
@@ -134,6 +136,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: dynamicSize(20),
+    marginBottom: dynamicSize(20),
     paddingHorizontal: dynamicSize(20),
   },
 

@@ -7,9 +7,8 @@ import Share from 'react-native-share';
 export const useIndex = ({navigation, route}: PropsScreen) => {
   const {removeProfile, profile} = profileContext();
 
-  const logout = () => {
-    deleteToken();
-    removeProfile();
+  const logout = async () => {
+    await removeProfile();
 
     navigation.reset({index: 0, routes: [{name: 'AuthStack'}]});
   };

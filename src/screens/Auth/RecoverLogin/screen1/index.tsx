@@ -10,7 +10,6 @@ import {CustomButton} from '@/src/components/CustomButton';
 import {Colors, dynamicSize, sizeScreen} from '@/src/config';
 import TextNavigation from '@/src/components/TextNavigation';
 import {CustomAlert} from '@/src/components/Alert';
-import {useTheme} from '@react-navigation/native';
 
 export const RecoverLogin1 = ({navigation, route}: PropsScreen) => {
   const {isLoading, alert, setAlert, control, handleSubmit, request, texts} =
@@ -18,8 +17,6 @@ export const RecoverLogin1 = ({navigation, route}: PropsScreen) => {
       navigation,
       route,
     });
-
-  const {colors} = useTheme();
 
   const styles = StyleSheet.create({
     container: {
@@ -32,7 +29,7 @@ export const RecoverLogin1 = ({navigation, route}: PropsScreen) => {
       textAlign: 'left',
 
       marginBottom: dynamicSize(10),
-      color: colors.text,
+      color: Colors.white,
     },
     subTitleText: {
       fontSize: dynamicSize(14),

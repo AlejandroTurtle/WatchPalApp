@@ -41,6 +41,7 @@ export const LightColors = {
   black: '#000000',
   white: '#FFFFFF',
   background: '#F2F4F5',
+  secondaryBackground: '#EDEFF2',
   gray: '#7E848D',
   gray200: '#A1A1A1',
   red: '#FF0000FF',

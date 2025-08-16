@@ -30,6 +30,7 @@ export const Details = ({navigation, route}: PropsScreen) => {
     episodes,
     seasons,
     numberOfSeasons,
+    type,
   } = useIndex({
     navigation,
     route,
@@ -93,6 +94,7 @@ export const Details = ({navigation, route}: PropsScreen) => {
               episodes={episodes}
               tituloId={data.id}
               numberOfSeasons={numberOfSeasons}
+              type={type}
             />
           </>
         )}

@@ -33,7 +33,7 @@ const screens: screenType[] = [
 const App: React.FC = () => {
   const scheme = useColorScheme();
 
-  const appColors = scheme === 'dark' ? DarkColors : LightColors;
+  const appColors = scheme === 'dark' ? DarkColors : DarkColors;
 
   const navigationTheme: NavigationTheme = {
     ...(scheme === 'dark' ? NavigationDarkTheme : NavigationDefaultTheme),

@@ -1,30 +1,17 @@
-/* eslint-disable react/no-unstable-nested-components */
 import React, {useState} from 'react';
-import {
-  KeyboardAvoidingView,
-  Platform,
-  TouchableWithoutFeedback,
-  Keyboard,
-  StyleSheet,
-  ScrollView,
-  Text,
-} from 'react-native';
+import {StyleSheet, Text} from 'react-native';
 import {useIndex} from './useIndex';
 import {PropsScreen} from '@/src/types/Navigation';
 import {Colors, dynamicSize, sizeScreen} from '@/src/config';
 import {CustomScreenContainer} from '@/src/components/CustomScreenContainer';
 import {CustomHeader} from '@/src/components/CustomHeader';
-import {CustomText} from '@/src/components/CustomText';
 import {CustomInput} from '@/src/components/CustomInput';
 import {CustomTextWithNavigation} from '@/src/components/CustomTextWithNavigation';
 import {CustomButton} from '@/src/components/CustomButton';
 import TextNavigation from '@/src/components/TextNavigation';
 import {CustomAlert} from '@/src/components/Alert';
-import {validarEmail} from '@/src/utils/Validators';
-import {useTheme} from '@react-navigation/native';
 import {TextInput} from 'react-native-paper';
 import Feather from 'react-native-vector-icons/Feather';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export const Login = ({navigation, route}: PropsScreen) => {
   const {
@@ -41,12 +28,10 @@ export const Login = ({navigation, route}: PropsScreen) => {
   });
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
-  const {colors} = useTheme();
-
   const styles = StyleSheet.create({
     title: {
       fontSize: dynamicSize(38),
-      color: colors.text,
+      color: Colors.white,
       textAlign: 'left',
       fontFamily: 'Poppins-SemiBold',
       marginBottom: dynamicSize(20),
@@ -89,7 +74,7 @@ export const Login = ({navigation, route}: PropsScreen) => {
               <Feather
                 name={secureTextEntry ? 'eye-off' : 'eye'}
                 size={20}
-                color={colors.text}
+                color={Colors.white}
               />
             )}
             onPress={() => setSecureTextEntry(!secureTextEntry)}
@@ -101,7 +86,7 @@ export const Login = ({navigation, route}: PropsScreen) => {
         text={texts.linkforgot}
         customStyle={{
           alignItems: 'flex-end',
-          color: colors.text,
+          color: Colors.white,
           marginbottom: dynamicSize(50),
         }}
         onPress={() => {

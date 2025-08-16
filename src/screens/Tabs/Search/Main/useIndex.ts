@@ -1,7 +1,7 @@
 import {Filme} from '@/src/components/CustomListMedia';
 import {baseUrl, theMovieKey} from '@/src/config';
 import {PropsScreen} from '@/src/types/Navigation';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useForm, SubmitHandler} from 'react-hook-form';
 
 type SearchProps = {
@@ -13,6 +13,7 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     defaultValues: {busca: ''},
   });
   const [media, setMedia] = useState<any[]>([]);
+  const [popularSeries, setPopularSeries] = useState<any[]>([]);
 
   const SearchMedia = async (data: SearchProps) => {
     try {
@@ -35,12 +36,52 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
             setMedia(json.results);
           }
         });
-        setMedia(json.results);
       }
     } catch (error) {
       console.error('Erro ao buscar filmes populares:', error);
     }
   };
 
-  return {control, handleSubmit, SearchMedia, media};
+  const getPopularTV = async (page = 1) => {
+    try {
+      const res = await fetch(
+        `${baseUrl}/tv/popular?language=pt-BR&region=BR&page=${page}`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: theMovieKey,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        console.error('Erro TMDb:', res.status, err);
+        return;
+      }
+
+      const json = await res.json();
+      if (!json.results || !Array.isArray(json.results)) {
+        console.error('Formato inesperado de resultados:', json.results);
+        return;
+      }
+      setPopularSeries(prev => [
+        ...prev,
+        ...json.results.map((item: Filme) => ({
+          ...item,
+          type: 'tv',
+        })),
+      ]);
+    } catch (error) {
+      console.error('Erro ao buscar séries populares:', error);
+    } finally {
+    }
+  };
+
+  useEffect(() => {
+    getPopularTV();
+  }, []);
+
+  return {control, handleSubmit, SearchMedia, media, popularSeries};
 };

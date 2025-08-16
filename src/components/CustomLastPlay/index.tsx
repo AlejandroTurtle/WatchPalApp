@@ -1,6 +1,7 @@
 import {Colors, dynamicSize} from '@/src/config';
 import React from 'react';
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   StyleSheet,
@@ -17,6 +18,7 @@ type Props = {
   cover?: Filme[];
   onPress?: (filme: Filme) => void;
   onClick?: () => void;
+  loading?: boolean;
 };
 
 const EmptyListComponent: React.FC<{onClick?: () => void}> = ({onClick}) => (
@@ -33,6 +35,7 @@ export const CustomLastPlay: React.FC<Props> = ({
   line = false,
   onPress,
   onClick,
+  loading = false,
 }) => {
   return (
     <View style={styles.wrapper}>

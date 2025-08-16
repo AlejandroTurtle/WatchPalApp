@@ -9,7 +9,7 @@ import {CustomListMedia} from '@/src/components/CustomListMedia';
 import {dynamicSize} from '@/src/config';
 
 export const Search = ({navigation, route}: PropsScreen) => {
-  const {control, handleSubmit, SearchMedia, media} = useIndex({
+  const {control, handleSubmit, SearchMedia, media, popularSeries} = useIndex({
     navigation,
     route,
   });
@@ -17,7 +17,7 @@ export const Search = ({navigation, route}: PropsScreen) => {
   return (
     <>
       <View style={styles.container}>
-        <CustomHeader text="Busca" noBack />
+        <CustomHeader text="Busca" />
         <CustomInput
           label="Busca"
           name="busca"
@@ -27,7 +27,7 @@ export const Search = ({navigation, route}: PropsScreen) => {
           closed
         />
         <CustomListMedia
-          media={media}
+          media={!media.length ? popularSeries : media}
           onPress={item => navigation.navigate('Details', {filme: item})}
         />
       </View>

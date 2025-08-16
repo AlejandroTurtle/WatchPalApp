@@ -1,5 +1,4 @@
 import {Colors} from '@/src/config';
-import {useTheme} from '@react-navigation/native';
 import React, {useRef, useState} from 'react';
 import {TextInput, View, StyleSheet} from 'react-native';
 

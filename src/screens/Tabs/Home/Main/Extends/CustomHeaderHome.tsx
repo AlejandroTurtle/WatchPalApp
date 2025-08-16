@@ -1,5 +1,12 @@
 import React, {useEffect} from 'react';
-import {ActivityIndicator, Image, StyleSheet, Text, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
 import {Colors, dynamicSize} from '@/src/config';
@@ -79,14 +86,14 @@ export const CustomHeaderHome = ({onPress}: {onPress: () => void}) => {
           <Text style={styles.textName}>{profile.nome}</Text>
         </View>
       </View>
-
-      <Feather
-        name="search"
-        size={24}
-        color={Colors.white}
-        style={styles.searchIcon}
-        onPress={onPress}
-      />
+      <TouchableOpacity onPress={onPress}>
+        <Feather
+          name="search"
+          size={24}
+          color={Colors.white}
+          style={styles.searchIcon}
+        />
+      </TouchableOpacity>
     </View>
   );
 };

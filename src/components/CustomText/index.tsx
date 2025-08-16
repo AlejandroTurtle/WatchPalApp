@@ -7,9 +7,8 @@
  */
 
 import {Colors} from '@/src/config';
-import {useTheme} from '@react-navigation/native';
 import React from 'react';
-import {StyleSheet, Text, useColorScheme} from 'react-native';
+import {StyleSheet, Text} from 'react-native';
 
 type Props = {
   children: React.ReactNode;
@@ -17,10 +16,8 @@ type Props = {
 };
 
 export const CustomText = ({children, style}: Props): React.JSX.Element => {
-  const {colors} = useTheme();
-
   return (
-    <Text style={[styles.text, {color: colors.text}, style]}>{children}</Text>
+    <Text style={[styles.text, {color: Colors.white}, style]}>{children}</Text>
   );
 };
 

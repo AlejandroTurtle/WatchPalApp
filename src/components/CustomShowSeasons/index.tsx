@@ -1,6 +1,5 @@
 import {Colors} from '@/src/config';
 import {Episodes, Seasons} from '@/src/screens/Tabs/Home/Details/useIndex';
-import {useTheme} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
@@ -24,6 +23,7 @@ type PropsCustomShowSeasons = {
   episodes: Episodes[];
   tituloId: number;
   numberOfSeasons: number;
+  type: string;
 };
 
 type ResponseWatchedEpisodes = {
@@ -39,8 +39,8 @@ export const CustomShowSeasons = ({
   episodes,
   tituloId,
   numberOfSeasons,
+  type,
 }: PropsCustomShowSeasons) => {
-  const {colors} = useTheme();
   const [expandedEpisodes, setExpandedEpisodes] = useState<{
     [key: string]: boolean;
   }>({});
@@ -64,11 +64,19 @@ export const CustomShowSeasons = ({
     );
   };
 
+  const allEpisodes = episodes.filter(e => e.season_number !== 0);
+  const totalEpsAll = allEpisodes.length;
+  const watchedCountAll = allEpisodes
+    .map(ep => `${ep.season_number}-${ep.episode_number}`)
+    .filter(key => watchedEpisodes.includes(key)).length;
+
   useEffect(() => {
-    if (seasons.length > 0) {
+    if (seasons.length > 0 && watchedCountAll !== totalEpsAll) {
       setExpandedSeasons([0, 1]);
+    } else if (watchedCountAll === totalEpsAll) {
+      setExpandedSeasons([]);
     }
-  }, [seasons]);
+  }, [seasons, watchedCountAll, totalEpsAll]);
 
   useEffect(() => {
     const loadWatched = async () => {
@@ -108,7 +116,6 @@ export const CustomShowSeasons = ({
     }
   }
 
-  //REMOVER ESSE ENDPOINT NO FUTURO
   async function unmarkAsWatched(key: string) {
     const [season, episode] = key.split('-').map(Number);
 
@@ -133,37 +140,6 @@ export const CustomShowSeasons = ({
       await markAsWatched(key, duration);
     }
   };
-
-  async function markSeasonAsWatched(
-    seasonNumber: number,
-    episodesInSeason: Episodes[],
-  ) {
-    try {
-      const newWatchedKeys: string[] = [];
-
-      for (const episode of episodesInSeason) {
-        const key = `${seasonNumber}-${episode.episode_number}`;
-
-        if (watchedEpisodes.includes(key)) {
-          continue;
-        }
-
-        const body = {
-          tituloId,
-          season: seasonNumber,
-          episode: episode.episode_number,
-          duration: episode.runtime,
-        };
-
-        await api.post('/media/episodios/assistidos', body);
-        newWatchedKeys.push(key);
-      }
-
-      setWatchedEpisodes(prev => [...prev, ...newWatchedKeys]);
-    } catch (err) {
-      console.error('Erro ao completar temporada', err);
-    }
-  }
 
   const markSeriesAsWatchedAll = () => {
     setAlert({
@@ -217,12 +193,6 @@ export const CustomShowSeasons = ({
     }
   };
 
-  const allEpisodes = episodes.filter(e => e.season_number !== 0);
-  const totalEpsAll = allEpisodes.length;
-  const watchedCountAll = allEpisodes
-    .map(ep => `${ep.season_number}-${ep.episode_number}`)
-    .filter(key => watchedEpisodes.includes(key)).length;
-
   const styles = StyleSheet.create({
     seasonContainer: {
       marginBottom: 20,
@@ -230,12 +200,12 @@ export const CustomShowSeasons = ({
     seasonTitle: {
       fontSize: 24,
       fontFamily: 'Poppins-SemiBold',
-      color: colors.text,
+      color: Colors.white,
     },
     episodeTitle: {
       fontSize: 12,
       fontFamily: 'Poppins-SemiBold',
-      color: colors.text,
+      color: Colors.white,
     },
     descriptionEpisode: {
       fontSize: 10,
@@ -306,42 +276,42 @@ export const CustomShowSeasons = ({
 
   return (
     <View>
-      {/* Cabeçalho da série: botão único para "Completar Série" + progresso geral */}
-      <View style={styles.seriesHeader}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={[styles.seasonTitle, {fontSize: 20}]}>
-            Total de temporadas:
-          </Text>
-          <Text style={[styles.countEpisode, {fontSize: 20}]}>
-            {numberOfSeasons}
-          </Text>
-        </View>
-
-        <TouchableOpacity
-          style={[
-            styles.completeSeriesButton,
-            watchedCountAll === totalEpsAll &&
-              styles.completeSeriesButtonActive,
-          ]}
-          disabled={watchedCountAll === totalEpsAll || markingSeries}
-          onPress={markSeriesAsWatchedAll}>
-          {markingSeries ? (
-            <ActivityIndicator />
-          ) : (
-            <Text
-              style={[
-                styles.completeSeriesText,
-                watchedCountAll === totalEpsAll &&
-                  styles.completeSeriesTextActive,
-              ]}>
-              {watchedCountAll === totalEpsAll
-                ? 'Série completa'
-                : 'Completar Série'}
+      {type === 'tv' && (
+        <View style={styles.seriesHeader}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={[styles.seasonTitle, {fontSize: 20}]}>
+              Total de temporadas:
             </Text>
-          )}
-        </TouchableOpacity>
-      </View>
+            <Text style={[styles.countEpisode, {fontSize: 20}]}>
+              {numberOfSeasons}
+            </Text>
+          </View>
 
+          <TouchableOpacity
+            style={[
+              styles.completeSeriesButton,
+              watchedCountAll === totalEpsAll &&
+                styles.completeSeriesButtonActive,
+            ]}
+            disabled={watchedCountAll === totalEpsAll || markingSeries}
+            onPress={markSeriesAsWatchedAll}>
+            {markingSeries ? (
+              <ActivityIndicator />
+            ) : (
+              <Text
+                style={[
+                  styles.completeSeriesText,
+                  watchedCountAll === totalEpsAll &&
+                    styles.completeSeriesTextActive,
+                ]}>
+                {watchedCountAll === totalEpsAll
+                  ? 'Série completa'
+                  : 'Completar Série'}
+              </Text>
+            )}
+          </TouchableOpacity>
+        </View>
+      )}
       {seasons
         .filter(season => season.season_number !== 0)
         .map(season => {

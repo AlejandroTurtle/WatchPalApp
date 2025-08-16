@@ -4,11 +4,15 @@ import {CustomScreenContainer} from '@/src/components/CustomScreenContainer';
 import {PropsScreen} from '@/src/types/Navigation';
 import {CustomLastPlay} from '@/src/components/CustomLastPlay';
 import {useIndex} from './useIndex';
-import {ScrollView} from 'react-native';
-import {TextInput} from 'react-native-paper';
+import {ScrollView, View} from 'react-native';
+import {ActivityIndicator, TextInput} from 'react-native-paper';
+import {Colors} from '@/src/config';
 
 export const Home = ({navigation, route}: PropsScreen) => {
-  const {filmsonAir, mostRated, mostPopular} = useIndex({navigation, route});
+  const {filmsonAir, mostRated, mostPopular, lastWatched, loading} = useIndex({
+    navigation,
+    route,
+  });
   const [text, setText] = React.useState('');
   return (
     <CustomScreenContainer>
@@ -16,12 +20,31 @@ export const Home = ({navigation, route}: PropsScreen) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 120}}
         style={{flexGrow: 1}}>
-        <CustomHeaderHome onPress={() => {}} />
-
-        <CustomLastPlay
-          title="Últimos assistidos"
-          onClick={() => console.log('ultimos assistidos')}
+        <CustomHeaderHome
+          onPress={() =>
+            navigation.navigate('Buscar', {
+              screen: 'Search',
+            })
+          }
         />
+        {loading ? (
+          <View>
+            <ActivityIndicator size="small" color={Colors.blue} />
+          </View>
+        ) : (
+          <CustomLastPlay
+            title="Últimos assistidos"
+            onClick={() => {
+              navigation.navigate('Buscar', {
+                screen: 'Search',
+              });
+            }}
+            onPress={filme => {
+              navigation.navigate('Details', {filme});
+            }}
+            cover={lastWatched}
+          />
+        )}
         <CustomLastPlay
           title="Filmes em cartaz no cinema"
           onPress={filme => {

@@ -3,7 +3,6 @@ import {View, Text, StyleSheet} from 'react-native';
 import {TextInput, TextInputProps} from 'react-native-paper';
 import {Controller, Control} from 'react-hook-form';
 import {Colors} from '../../config';
-import {useTheme} from '@react-navigation/native';
 import MaskInput from 'react-native-mask-input';
 import {Masks, MasksTypes} from '@/src/utils/Masks';
 
@@ -31,8 +30,6 @@ export const CustomInput = ({
   closed = false,
   ...rest
 }: PropsInput) => {
-  const {colors} = useTheme();
-
   return (
     <Controller
       control={control}
@@ -59,17 +56,24 @@ export const CustomInput = ({
             }
             render={props => <MaskInput {...props} mask={Masks[mask!]} />}
             error={!!error}
-            placeholderTextColor={colors.text}
+            placeholderTextColor={Colors.white}
             onSubmitEditing={onSubmitEditing}
             returnKeyType="search"
             placeholder={placeholder}
+            style={[
+              styles.input,
+              {color: value ? Colors.red : Colors.red}, // Muda a cor do texto com base na presença de texto
+            ]}
             theme={{
               colors: {
                 primary: Colors.blue,
-                background: colors.background,
+                background: Colors.background,
                 text: Colors.red,
                 error: Colors.red,
                 outline: error ? Colors.red : Colors.gray,
+                placeholder: Colors.red,
+                onSurface: Colors.white,
+                onSurfaceVariant: Colors.white,
               },
               roundness: 12,
             }}

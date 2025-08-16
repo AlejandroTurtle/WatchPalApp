@@ -3,7 +3,6 @@ import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useIndex} from './useIndex';
 import VerificationCodeInput from './Extends/VerificationCodeInput';
 
-import {ThemeContext, useTheme} from '@react-navigation/native';
 import {PropsScreen} from '@/src/types/Navigation';
 import {CustomScreenContainer} from '@/src/components/CustomScreenContainer';
 import {CustomHeader} from '@/src/components/CustomHeader';
@@ -44,8 +43,6 @@ export const RecoverLogin2 = ({navigation, route}: PropsScreen) => {
     }));
   };
 
-  const {colors} = useTheme();
-
   const styles = StyleSheet.create({
     containerImage: {
       alignSelf: 'center',
@@ -81,7 +78,7 @@ export const RecoverLogin2 = ({navigation, route}: PropsScreen) => {
       fontWeight: '400',
       textAlign: 'left',
       marginBottom: dynamicSize(10),
-      color: colors.text,
+      color: Colors.white,
     },
     subTitleText: {
       fontSize: dynamicSize(14),
@@ -121,7 +118,7 @@ export const RecoverLogin2 = ({navigation, route}: PropsScreen) => {
                 <Feather
                   name={secureTextEntry ? 'eye-off' : 'eye'}
                   size={20}
-                  color={colors.text}
+                  color={Colors.white}
                 />
               )}
               onPress={() => setSecureTextEntry(!secureTextEntry)}
@@ -141,7 +138,7 @@ export const RecoverLogin2 = ({navigation, route}: PropsScreen) => {
                 <Feather
                   name={confirmSecureTextEntry ? 'eye-off' : 'eye'}
                   size={20}
-                  color={colors.text}
+                  color={Colors.white}
                 />
               )}
               onPress={() => setConfirmSecureTextEntry(!confirmSecureTextEntry)}
@@ -167,7 +164,7 @@ export const RecoverLogin2 = ({navigation, route}: PropsScreen) => {
           <Text
             style={{
               fontSize: dynamicSize(16),
-              color: colors.text,
+              color: Colors.white,
               fontFamily: 'Poppins-Regular',
             }}>
             Ainda não recebeu o código?

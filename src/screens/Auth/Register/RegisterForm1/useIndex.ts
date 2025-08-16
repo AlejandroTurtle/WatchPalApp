@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 import {Alert} from '@/src/components/Alert';
 import {setItemAsync} from '@/src/libs/AsyncStorage';
 import {api} from '@/src/services/api';
@@ -33,7 +32,6 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
   const [isLoading, setLoading] = useState(false);
   const [alert, setAlert] = useState<Alert>(null);
   const [aceito, setAceito] = useState(false);
-  const [aceitoError, setAceitoError] = useState<string | null>(null);
   const [photoChanged, setPhotoChanged] = useState(false);
   const [foto, setFoto] = useState<UserCreateDTO['foto']>({
     uri: '',
@@ -86,21 +84,6 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     resolver: yupResolver(SchemaValidation),
   });
 
-  const validation = () => {
-    let isValid = true;
-    const errors: any = {};
-
-    if (!aceito) {
-      errors.aceito = 'Você precisa aceitar os termos de uso';
-      isValid = false;
-      setAceitoError(errors.aceito);
-    } else {
-      setAceitoError(null);
-    }
-
-    return isValid;
-  };
-
   // useEffect(() => {
   //   const userData = {
   //     nome: 'Alejandro Gomes',
@@ -125,57 +108,56 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
   // }, []);
 
   const createAccount = async () => {
-    if (await validation()) {
-      setLoading(true);
-      const body = {
-        nome: getValues('nome'),
-        celular: getValues('celular'),
-        email: getValues('email').toLowerCase().trim(),
-        confirmarEmail: getValues('confirmarEmail').toLowerCase().trim(),
-        senha: getValues('senha'),
-        confirmarSenha: getValues('confirmarSenha'),
-        foto,
-      };
+    setLoading(true);
+    const body = {
+      nome: getValues('nome'),
+      celular: getValues('celular'),
+      email: getValues('email').toLowerCase().trim(),
+      confirmarEmail: getValues('confirmarEmail').toLowerCase().trim(),
+      senha: getValues('senha'),
+      confirmarSenha: getValues('confirmarSenha'),
+      foto,
+    };
 
-      const formData = new FormData();
-      formData.append('nome', body?.nome);
-      formData.append('celular', body?.celular);
-      formData.append('email', body?.email);
-      formData.append('password', body?.senha);
-      if (photoChanged && foto) {
-        formData.append('foto', {
-          name: foto?.fileName,
-          type: foto?.type,
-          uri: foto?.uri,
-        });
-      }
-
-      const response = await api.form<UserCreateDTO>(
-        '/usuarios/CriarUsuario',
-        formData,
-      );
-      if (response.success) {
-        await setItemAsync('userId', response?.data?.id);
-        setAlert({
-          title: 'Sucesso',
-          message: 'Usuário criado com sucesso',
-          onPress: () => {
-            navigation.reset({
-              index: 0,
-              routes: [
-                {name: 'Login', params: {email: body.email, senha: body.senha}},
-              ],
-            });
-          },
-        });
-        setLoading(false);
-      }
+    const formData = new FormData();
+    formData.append('nome', body?.nome);
+    formData.append('celular', body?.celular);
+    formData.append('email', body?.email);
+    formData.append('password', body?.senha);
+    if (photoChanged && foto) {
+      formData.append('foto', {
+        name: foto?.fileName,
+        type: foto?.type,
+        uri: foto?.uri,
+      });
     }
-  };
 
-  const errosLength = aceitoError
-    ? Object.values(aceitoError)?.filter(e => e !== undefined).length
-    : 0;
+    const response = await api.form<UserCreateDTO>(
+      '/usuarios/CriarUsuario',
+      formData,
+    );
+    if (response.success) {
+      await setItemAsync('userId', response?.data?.id);
+      setAlert({
+        title: 'Sucesso',
+        message: 'Usuário criado com sucesso',
+        onPress: () => {
+          navigation.reset({
+            index: 0,
+            routes: [
+              {name: 'Login', params: {email: body.email, senha: body.senha}},
+            ],
+          });
+        },
+      });
+    } else {
+      setAlert({
+        title: 'Alerta',
+        message: response.error,
+      });
+    }
+    setLoading(false);
+  };
 
   return {
     isLoading,
@@ -183,13 +165,11 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     setAlert,
     createAccount,
     texts,
-    errosLength,
     aceito,
     setAceito,
     setPhotoChanged,
     setFoto,
     foto,
-    aceitoError,
     control,
     handleSubmit,
   };

@@ -1,11 +1,16 @@
 import {Alert} from '@/src/components/Alert';
 import {baseUrl, theMovieKey} from '@/src/config';
 import {profileContext} from '@/src/context/profileContext';
+import {
+  useSeriesDispatch,
+  useSeriesState,
+} from '@/src/context/useReducerSeries';
 import {api} from '@/src/services/api';
+import {Favorites} from '@/src/types/Auth';
 import {PropsScreen} from '@/src/types/Navigation';
 import {useEffect, useState} from 'react';
 
-interface MovieResult {
+export interface MovieResult {
   adult: boolean;
   backdrop_path: string | null;
   genre_ids: number[];
@@ -48,6 +53,10 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
   const [seasons, setSeasons] = useState<Seasons[]>([]);
   const [episodes, setEpisodes] = useState<Episodes[]>([]);
   const [numberOfSeasons, setNumberOfSeasons] = useState<number>(0);
+  const seriesState = useSeriesState();
+  const seriesDispatch = useSeriesDispatch();
+
+  console.log('FILME DETALHES: ', JSON.stringify(filme, null, 2));
 
   useEffect(() => {
     const favoritos = profile?.favorites ?? [];
@@ -61,10 +70,13 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
 
   if (filme.media_type === 'movie' || filme.type === 'movie') {
     type = 'movie';
+    console.log('1 if');
   } else if (filme.media_type === 'tv' || filme.type === 'tv') {
     type = 'tv';
+    console.log('2 if');
   } else {
-    type = 'movie';
+    type = 'tv';
+    console.log('3  if');
   }
 
   const getDetails = async () => {
@@ -82,6 +94,7 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
       );
       const _data: any = await response.json();
       setData(_data);
+      console.log('DETALHES: ', JSON.stringify(type, null, 2));
     } catch (error) {
       console.error('Erro ao buscar filmes populares:', error);
     } finally {
@@ -101,8 +114,9 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
       userId: profile?.id,
       tituloId: filme.id,
       titulo: filme.original_title ?? filme.original_name,
-      type: filme.media_type,
+      type: filme.media_type ?? filme.type,
     };
+    console.log('Body:', JSON.stringify(body, null, 2));
     const response = await api.post('/media/adicionar-favorito', body);
     if (response.success) {
       setFavorite(true);
@@ -110,6 +124,23 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
         title: 'Sucesso',
         message: 'Filme adicionado aos favoritos com sucesso!',
       });
+      const payload = {
+        id: filme.id,
+        title:
+          filme.title ??
+          filme.original_title ??
+          filme.name ??
+          filme.original_name,
+        name: filme.name ?? filme.original_name,
+        release_date: filme.release_date,
+        first_air_date: filme.first_air_date,
+        poster_path: filme.poster_path,
+        vote_average: data?.vote_average ?? filme.vote_average,
+        vote_count: data?.vote_count ?? filme.vote_count,
+        type: filme.media_type ?? filme.type ?? 'movie',
+        genres: filme.genres ?? [],
+      };
+      seriesDispatch({type: 'ADD_MEDIA_FAVORITE', payload});
     } else {
       setAlert({title: 'Alerta', message: response.error});
     }
@@ -123,6 +154,7 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
         title: 'Sucesso',
         message: 'Filme removido dos favoritos com sucesso!',
       });
+      seriesDispatch({type: 'REMOVE_MEDIA_FAVORITE', payload: filme.id});
     } else {
       setAlert({title: 'Alerta', message: response.error});
     }
@@ -180,11 +212,12 @@ export const useIndex = ({navigation, route}: PropsScreen) => {
     addFavorite,
     alert,
     setAlert,
-    favorite,
+    favorite: seriesState.favorites.find(f => f.id === filme.id),
     removeFavorite,
     loading,
     episodes,
     seasons,
     numberOfSeasons,
+    type,
   };
 };

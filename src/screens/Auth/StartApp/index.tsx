@@ -39,7 +39,7 @@ export const StartApp = ({navigation, route}: PropsScreen) => {
           marginTop: sizeScreen.height * 0.1,
         }}>
         <View style={styles.containerImage}>
-          <Image style={styles.image} source={currentLogo} />
+          <Image style={styles.image} source={logoLight} />
         </View>
 
         <CustomButton

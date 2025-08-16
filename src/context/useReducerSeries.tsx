@@ -1,20 +1,37 @@
 import React, {createContext, useReducer, useContext, ReactNode} from 'react';
 
+type MediaItem = {
+  id: number;
+  title?: string;
+  name?: string;
+  release_date?: string;
+  first_air_date?: string;
+  genres: {id: number; name: string}[];
+  vote_average?: number;
+  vote_count?: number;
+  poster_path?: string;
+  type?: 'movie' | 'tv' | string;
+};
+
 type State = {
   episodesWatched: number;
   hoursWatched: number;
   seriesCompleted: number;
+  favorites: MediaItem[];
 };
-
 type Action =
   | {type: 'SET_EPISODES_WATCHED'; payload: number}
   | {type: 'SET_HOURS_WATCHED'; payload: number}
-  | {type: 'SET_SERIES_COMPLETED'; payload: number};
+  | {type: 'SET_SERIES_COMPLETED'; payload: number}
+  | {type: 'SET_MEDIA_FAVORITE'; payload: MediaItem[]}
+  | {type: 'ADD_MEDIA_FAVORITE'; payload: MediaItem}
+  | {type: 'REMOVE_MEDIA_FAVORITE'; payload: number};
 
 const initialState: State = {
   episodesWatched: 0,
   hoursWatched: 0,
   seriesCompleted: 0,
+  favorites: [],
 };
 
 function reducer(state: State, action: Action): State {
@@ -25,6 +42,15 @@ function reducer(state: State, action: Action): State {
       return {...state, hoursWatched: action.payload};
     case 'SET_SERIES_COMPLETED':
       return {...state, seriesCompleted: action.payload};
+    case 'SET_MEDIA_FAVORITE':
+      return {...state, favorites: action.payload};
+    case 'ADD_MEDIA_FAVORITE':
+      return {...state, favorites: [...state.favorites, action.payload]};
+    case 'REMOVE_MEDIA_FAVORITE':
+      return {
+        ...state,
+        favorites: state.favorites.filter(f => f.id !== action.payload),
+      };
     default:
       return state;
   }

@@ -8,14 +8,7 @@
  */
 
 import React, {useState} from 'react';
-import {
-  Linking,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Linking, StyleSheet, Text, View} from 'react-native';
 import {useIndex} from './useIndex';
 import {PropsScreen} from '@/src/types/Navigation';
 import {Colors, dynamicSize} from '@/src/config';
@@ -24,14 +17,12 @@ import {CustomHeader} from '@/src/components/CustomHeader';
 import {CustomText} from '@/src/components/CustomText';
 import CustomImagePicker from '@/src/components/CustomProfileImagePicker';
 import {CustomInput} from '@/src/components/CustomInput';
-import {CustomPicker} from '@/src/components/CustomPicker';
 import {CustomTextWithNavigation} from '@/src/components/CustomTextWithNavigation';
 import {CustomRadio} from '@/src/components/CustomRadio';
 import {CustomButton} from '@/src/components/CustomButton';
 import {CustomAlert} from '@/src/components/Alert';
 import {TextInput} from 'react-native-paper';
 import Feather from 'react-native-vector-icons/Feather';
-import {useTheme} from '@react-navigation/native';
 export const RegisterForm1 = ({navigation, route}: PropsScreen) => {
   const {
     isLoading,
@@ -39,13 +30,9 @@ export const RegisterForm1 = ({navigation, route}: PropsScreen) => {
     setAlert,
     createAccount,
     texts,
-    errosLength,
-    aceito,
-    setAceito,
     setPhotoChanged,
     setFoto,
     foto,
-    aceitoError,
     control,
     handleSubmit,
   } = useIndex({navigation, route});
@@ -53,12 +40,10 @@ export const RegisterForm1 = ({navigation, route}: PropsScreen) => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [confirmSecureTextEntry, setConfirmSecureTextEntry] = useState(true);
 
-  const {colors} = useTheme();
-
   const styles = StyleSheet.create({
     title: {
       fontSize: dynamicSize(30),
-      color: colors.text,
+      color: Colors.white,
       fontWeight: 'bold',
       marginBottom: dynamicSize(5),
     },
@@ -132,7 +117,7 @@ export const RegisterForm1 = ({navigation, route}: PropsScreen) => {
               <Feather
                 name={secureTextEntry ? 'eye-off' : 'eye'}
                 size={20}
-                color={colors.text}
+                color={Colors.white}
               />
             )}
             onPress={() => setSecureTextEntry(!secureTextEntry)}
@@ -153,7 +138,7 @@ export const RegisterForm1 = ({navigation, route}: PropsScreen) => {
               <Feather
                 name={confirmSecureTextEntry ? 'eye-off' : 'eye'}
                 size={20}
-                color={colors.text}
+                color={Colors.white}
               />
             )}
             onPress={() => setConfirmSecureTextEntry(!confirmSecureTextEntry)}
@@ -161,21 +146,20 @@ export const RegisterForm1 = ({navigation, route}: PropsScreen) => {
           />
         }
       />
-      <CustomTextWithNavigation
+      {/* <CustomTextWithNavigation
         text={'Toque aqui para ler o termo de uso'}
         onPress={() => Linking.openURL('https://google.com.br')}
         customStyle={{
           alignItems: 'flex-start',
         }}
-      />
-      <CustomRadio aceito={aceito} text="Eu li e aceito" onToggle={setAceito} />
-      {aceitoError && <Text style={styles.errorText}>{aceitoError}</Text>}
+      /> */}
+      {/* <CustomRadio aceito={aceito} text="Eu li e aceito" onToggle={setAceito} />
+      {aceitoError && <Text style={styles.errorText}>{aceitoError}</Text>} */}
       <CustomButton
         title={texts.button}
         isLoading={isLoading}
         onPress={handleSubmit(createAccount)}
         alignItems="flex-end"
-        backgroundColor={errosLength > 0 ? Colors.black : Colors.purple}
         mv={5}
       />
 

@@ -1,5 +1,4 @@
-import {dynamicSize} from '@/src/config';
-import {useTheme} from '@react-navigation/native';
+import {Colors, dynamicSize} from '@/src/config';
 import React, {useEffect, useState} from 'react';
 import {
   FlatList,
@@ -35,7 +34,6 @@ type PropsCustomListMedia = {
 };
 
 export const CustomListMedia = ({media, onPress}: PropsCustomListMedia) => {
-  const {colors} = useTheme();
   const [filteredMedia, setFilteredMedia] = useState<Filme[]>([]);
 
   useEffect(() => {
@@ -65,7 +63,7 @@ export const CustomListMedia = ({media, onPress}: PropsCustomListMedia) => {
       marginTop: dynamicSize(4),
       fontSize: dynamicSize(14),
       fontFamily: 'Poppins-SemiBold',
-      color: colors.text,
+      color: Colors.white,
       textAlign: 'center',
     },
   });
@@ -75,7 +73,7 @@ export const CustomListMedia = ({media, onPress}: PropsCustomListMedia) => {
       data={filteredMedia}
       keyExtractor={item => item.id.toString()}
       numColumns={2}
-      contentContainerStyle={{paddingBottom: dynamicSize(280)}}
+      contentContainerStyle={{paddingBottom: dynamicSize(80)}}
       showsVerticalScrollIndicator={false}
       columnWrapperStyle={styles.row}
       renderItem={({item}) => {
